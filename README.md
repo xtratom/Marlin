@@ -1,3 +1,5 @@
+# This repository is just a copy of the official Marlin, with Tronxy X5SA (and variants) pre-configured.
+
 # Marlin 3D Printer Firmware
 
 ![GitHub](https://img.shields.io/github/license/marlinfirmware/marlin.svg)
