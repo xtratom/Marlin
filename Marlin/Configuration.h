@@ -41,6 +41,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 Titan TMC"
 
 #elif V6_330_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -49,6 +50,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 Titan"
 
 #elif V6_330_NO_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -57,6 +59,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 TMC"
 
 #elif V6_330_NO_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -65,7 +68,8 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
-
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6"
+  
 #elif V6_400_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
   #define WITH_TMC 1
@@ -73,6 +77,7 @@
   #define X_BED_SIZE 400
   #define Y_BED_SIZE 400
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 400 Titan TMC"
 
 #elif V6_400_NO_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -81,6 +86,7 @@
   #define X_BED_SIZE 400
   #define Y_BED_SIZE 400
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 400 TMC"
 
 #elif V6_500_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -89,6 +95,7 @@
   #define X_BED_SIZE 500
   #define Y_BED_SIZE 500
   #define Z_MAX_POS 500
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 500 Titan TMC"
 
 #elif V5_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -97,6 +104,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 Titan TMC"
 
 #elif V5_330_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -105,6 +113,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 Titan"
 
 #elif V5_330_NO_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -113,6 +122,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 TMC"
 
 #elif V5_330_NO_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -121,6 +131,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330"
   
 #endif
 
@@ -235,7 +246,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Tronxy X5SA"
+
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like http://www.uuidgenerator.net/version4
