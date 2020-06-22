@@ -27,12 +27,13 @@
 //#define V6_330_NO_TITAN_NO_TMC 1
 // #define V6_400_TITAN_TMC 1
 // #define V6_400_NO_TITAN_TMC 1
-#define V6_500_TITAN_TMC 1
+//#define V6_500_TITAN_TMC 1
 
 // #define V5_330_TITAN_TMC 1
 // #define V5_330_TITAN_NO_TMC 1
 // #define V5_330_NO_TITAN_TMC 1
-//#define V5_330_NO_TITAN_NO_TMC 1
+#define V5_330_NO_TITAN_NO_TMC 1
+// #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
 
 #if V6_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -132,7 +133,16 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330"
-  
+
+#elif XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 310
+  #define Y_BED_SIZE 310
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy XY3 310"
+
 #endif
 
 /**
@@ -724,7 +734,9 @@
 
 // Uncomment one of these options to enable CoreXY, CoreXZ, or CoreYZ kinematics
 // either in the usual order or reversed
+#ifndef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
 #define COREXY
+#endif
 //#define COREXZ
 //#define COREYZ
 //#define COREYX
@@ -1031,7 +1043,11 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE
+#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+  #define PROBE_MANUALLY
+#else
+  #define FIX_MOUNTED_PROBE
+#endif
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -1178,7 +1194,9 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
+#ifndef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
 #define Z_MIN_PROBE_REPEATABILITY_TEST
+#endif 
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1225,9 +1243,19 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true
+#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+  #define INVERT_X_DIR false
+#else
+  #define INVERT_X_DIR true
+#endif
+
 #define INVERT_Y_DIR true
-#define INVERT_Z_DIR false
+
+#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+  #define INVERT_Z_DIR true
+#else
+  #define INVERT_Z_DIR false
+#endif
 
 // @section extruder
 
@@ -1376,7 +1404,11 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#define AUTO_BED_LEVELING_BILINEAR
+#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+  #define MESH_BED_LEVELING
+#else
+  #define AUTO_BED_LEVELING_BILINEAR
+#endif
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
