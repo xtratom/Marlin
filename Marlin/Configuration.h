@@ -33,8 +33,10 @@
 // #define V5_330_TITAN_TMC 1
 // #define V5_330_TITAN_NO_TMC 1
 // #define V5_330_NO_TITAN_TMC 1
-// #define V5_330_NO_TITAN_NO_TMC 1
+#define V5_330_NO_TITAN_NO_TMC 1
 // #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
+
+#define MKS_UI
 
 #if V6_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -217,7 +219,9 @@
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
+#ifndef MKS_UI
 #define CUSTOM_STATUS_SCREEN_IMAGE
+#endif
 
 // @section machine
 
@@ -1350,7 +1354,11 @@
 
   // Set one or more commands to execute on filament runout.
   // (After 'M412 H' Marlin will ask the host to handle the process.)
+  #ifndef MKS_UI
   #define FILAMENT_RUNOUT_SCRIPT "M600"
+  #else
+  #define FILAMENT_RUNOUT_SCRIPT "M25"
+  #endif
 
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
@@ -1516,8 +1524,9 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
+#ifndef MKS_UI
 #define LCD_BED_LEVELING
-
+#endif
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
   #define LCD_PROBE_Z_RANGE 4     // (mm) Z Range centered on Z_MIN_POS for LCD Z adjustment
@@ -2309,13 +2318,15 @@
 //
 // FSMC display (MKS Robin, Alfawise U20, JGAurora A5S, REXYZ A1, etc.)
 //
+#ifndef MKS_UI
 #define FSMC_GRAPHICAL_TFT
 //TFT SETUP DONE BY CHITU BOARD
-
+#else
 //
 // TFT Little VGL UI
 //
-//#define TFT_LITTLE_VGL_UI
+#define TFT_LITTLE_VGL_UI
+#endif
 
 //=============================================================================
 //============================  Other Controllers  ============================
