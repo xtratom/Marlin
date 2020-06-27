@@ -143,7 +143,7 @@ void tft_style_init() {
   tft_style_lable_rel.body.grad_color = LV_COLOR_BACKGROUND;
   tft_style_lable_rel.text.color = LV_COLOR_TEXT;
   tft_style_lable_rel.text.sel_color = LV_COLOR_TEXT;
-  #if ENABLED(HAS_SPI_FLASH_FONT)
+  #if HAS_SPI_FLASH_FONT
     tft_style_lable_pre.text.font = &gb2312_puhui32;
     tft_style_lable_rel.text.font = &gb2312_puhui32;
   #else
@@ -334,7 +334,7 @@ char *creat_title_text() {
   return public_buf_m;
 }
 
-#if ENABLED(HAS_GCODE_PREVIEW)
+#if HAS_GCODE_PREVIEW
 
 void preview_gcode_prehandle(char *path) {
   #if ENABLED(SDSUPPORT)
@@ -1187,7 +1187,7 @@ void LV_TASK_HANDLER() {
   //lv_tick_inc(1);
   lv_task_handler();
   TERN_(MKS_TEST, mks_test());
-  #if ENABLED(HAS_GCODE_PREVIEW)
+  #if HAS_GCODE_PREVIEW
     disp_pre_gcode(2, 36);
   #endif
   GUI_RefreshPage();
