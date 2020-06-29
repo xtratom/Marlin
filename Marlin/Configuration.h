@@ -73,7 +73,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6"
-  
+
 #elif V6_400_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
   #define WITH_TMC 1
@@ -1201,7 +1201,7 @@
 // Enable the M48 repeatability test to test probe accuracy
 #ifndef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
 #define Z_MIN_PROBE_REPEATABILITY_TEST
-#endif 
+#endif
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -2319,7 +2319,7 @@
 // FSMC display (MKS Robin, Alfawise U20, JGAurora A5S, REXYZ A1, etc.)
 //
 #ifndef MKS_UI
-#define FSMC_GRAPHICAL_TFT
+  #define FSMC_GRAPHICAL_TFT
 //TFT SETUP DONE BY CHITU BOARD
 #else
 //
@@ -2328,7 +2328,8 @@
 // Default MKS icons and fonts: https://git.io/JJvzK
 // Copy mks_pic and mks_font folders to the root of your SD
 //
-//#define TFT_LITTLE_VGL_UI
+  #define TFT_LITTLE_VGL_UI
+#endif
 
 //=============================================================================
 //============================  Other Controllers  ============================
