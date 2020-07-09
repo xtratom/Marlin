@@ -112,8 +112,6 @@
 //
 // TronXY TFT Support
 //
-#define FSMC_GRAPHICAL_TFT
-#define TOUCH_BUTTONS
 
 #if ENABLED(FSMC_GRAPHICAL_TFT)
   #define FSMC_UPSCALE 3
