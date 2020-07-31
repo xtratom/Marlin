@@ -33,10 +33,10 @@
 // #define V5_330_TITAN_TMC 1
 // #define V5_330_TITAN_NO_TMC 1
 // #define V5_330_NO_TITAN_TMC 1
-//#define V5_330_NO_TITAN_NO_TMC 1
+// #define V5_330_NO_TITAN_NO_TMC 1
 // #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
 
-// #define MKS_UI
+#define MKS_UI
 
 #if V6_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6

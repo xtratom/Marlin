@@ -4,6 +4,8 @@ CONFIGS=(
   S_CURVE_ACCELERATION
   LIN_ADVANCE
   LIN_ADVANCE+S_CURVE_ACCELERATION
+  CLASSIC_JERK
+  CLASSIC_JERK+LIN_ADVANCE
 )
 
 MACHINES=(V6_330_TITAN_TMC
@@ -25,6 +27,8 @@ rm -rf $OUTPUT_FOLDER
 for m in ${MACHINES[@]}; do
   printf "Building $m...\n"
   for f in ${CONFIGS[@]}; do
+    #clean!
+    rm -rf .pio/build/chitu_v5_gpio_init
     DEFINES="-D$m -D"`echo $f | sed "s/+/ -D/g"`
     printf "\tConfig $f..."
     FOLDER="$OUTPUT_FOLDER/$m/$f/"
@@ -35,10 +39,3 @@ for m in ${MACHINES[@]}; do
   done;
 done;
 
-# for f in ${CONFIGS[@]}; do
-#   printf "Building $f..."
-#   PLATFORMIO_BUILD_FLAGS="-D$f=1" platformio run > /dev/null 2>&1
-#   mkdir -p "$OUTPUT_FOLDER/$f"
-#   cp .pio/build/chitu_v5_gpio_init/update.cbd "$OUTPUT_FOLDER/$f"
-#   printf " done\n"
-# done;
