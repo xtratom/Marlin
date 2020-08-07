@@ -19,7 +19,7 @@ _Right now, this repo don't work with marlin auto build_
 // #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
 
 //to use the new UI
-#define MKS_UI
+#define LVGL_UI
 ```
 
 # Marlin 3D Printer Firmware

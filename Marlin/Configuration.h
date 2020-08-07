@@ -36,7 +36,7 @@
 // #define V5_330_NO_TITAN_NO_TMC 1
 // #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
 
-#define MKS_UI
+// #define LVGL_UI
 
 #if V6_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -219,7 +219,7 @@
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
-#ifndef MKS_UI
+#ifndef LVGL_UI
 #define CUSTOM_STATUS_SCREEN_IMAGE
 #endif
 
@@ -1366,7 +1366,7 @@
 
   // Set one or more commands to execute on filament runout.
   // (After 'M412 H' Marlin will ask the host to handle the process.)
-  #ifndef MKS_UI
+  #ifndef LVGL_UI
   #define FILAMENT_RUNOUT_SCRIPT "M600"
   #else
   #define FILAMENT_RUNOUT_SCRIPT "M25"
@@ -1536,7 +1536,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#ifndef MKS_UI
+#ifndef LVGL_UI
 #define LCD_BED_LEVELING
 #endif
 #if ENABLED(LCD_BED_LEVELING)
@@ -2376,7 +2376,7 @@
 // FSMC display (MKS Robin, Alfawise U20, JGAurora A5S, REXYZ A1, etc.)
 // Upscaled 128x64 Marlin UI
 //
-#ifndef MKS_UI
+#ifndef LVGL_UI
   #define FSMC_GRAPHICAL_TFT
 //TFT SETUP DONE BY CHITU BOARD
 #else
