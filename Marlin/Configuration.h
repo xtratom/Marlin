@@ -37,6 +37,8 @@
 // #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
 
 // #define LVGL_UI
+// #define CLASSIC_UI
+// #define COLOR_UI
 
 #if V6_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -2356,7 +2358,9 @@
 //
 //#define TFT_320x240
 //#define TFT_320x240_SPI
-//#define TFT_480x320
+#ifdef COLOR_UI
+#define TFT_480x320
+#endif
 //#define TFT_480x320_SPI
 
 //
@@ -2376,10 +2380,10 @@
 // FSMC display (MKS Robin, Alfawise U20, JGAurora A5S, REXYZ A1, etc.)
 // Upscaled 128x64 Marlin UI
 //
-#ifndef LVGL_UI
+#if defined(CLASSIC_UI)
   #define FSMC_GRAPHICAL_TFT
 //TFT SETUP DONE BY CHITU BOARD
-#else
+#elif defined(LVGL_UI)
 //
 // TFT LVGL UI
 //

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 UI=(
-  CLASSIC_MARLIN
+  COLOR_UI
+  CLASSIC_UI
   LVGL_UI
 )
 
