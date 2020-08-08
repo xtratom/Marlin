@@ -221,7 +221,7 @@
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
-#ifndef LVGL_UI
+#ifdef CLASSIC_UI
 #define CUSTOM_STATUS_SCREEN_IMAGE
 #endif
 
