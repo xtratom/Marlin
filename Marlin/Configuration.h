@@ -36,6 +36,11 @@
 // #define V5_330_NO_TITAN_NO_TMC 1
 // #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
 
+// XY2 Thanks to Emmanuel Hayez!
+// #define XY2_V6_255_NO_TITAN_TMC 1
+// #define XY2_V6_255_TITAN_TMC 1
+// #define XY2_V6_255_BMG_TMC 1
+
 // #define LVGL_UI
 // #define CLASSIC_UI
 // #define COLOR_UI
@@ -48,6 +53,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 Titan TMC"
+  #define COREXY
 
 #elif V6_330_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -57,6 +63,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 Titan"
+  #define COREXY
 
 #elif V6_330_NO_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -66,6 +73,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 TMC"
+  #define COREXY
 
 #elif V6_330_NO_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -75,6 +83,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6"
+  #define COREXY
 
 #elif V6_400_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -84,6 +93,7 @@
   #define Y_BED_SIZE 400
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 400 Titan TMC"
+  #define COREXY
 
 #elif V6_400_NO_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -93,6 +103,7 @@
   #define Y_BED_SIZE 400
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 400 TMC"
+  #define COREXY
 
 #elif V6_500_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -102,6 +113,7 @@
   #define Y_BED_SIZE 500
   #define Z_MAX_POS 500
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 500 Titan TMC"
+  #define COREXY
 
 #elif V5_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -111,6 +123,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 Titan TMC"
+  #define COREXY
 
 #elif V5_330_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -120,6 +133,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 Titan"
+  #define COREXY
 
 #elif V5_330_NO_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -129,6 +143,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330 TMC"
+  #define COREXY
 
 #elif V5_330_NO_TITAN_NO_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -138,6 +153,7 @@
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330"
+  #define COREXY
 
 #elif XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
   #define MOTHERBOARD BOARD_CHITU3D_V5
@@ -147,6 +163,34 @@
   #define Y_BED_SIZE 310
   #define Z_MAX_POS 400
   #define CUSTOM_MACHINE_NAME "Tronxy XY3 310"
+
+#elif XY2_V6_255_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V6_255_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V6_255_BMG_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define WITH_BMG 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
 
 #endif
 
@@ -741,9 +785,7 @@
 
 // Uncomment one of these options to enable CoreXY, CoreXZ, or CoreYZ kinematics
 // either in the usual order or reversed
-#ifndef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
-#define COREXY
-#endif
+//#define COREXY
 //#define COREXZ
 //#define COREYZ
 //#define COREYX
@@ -899,9 +941,11 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#if WITH_TMC && WITH_TITAN
+#if WITH_TMC && WITH_BMG
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 830 }
+#elif WITH_TMC && WITH_TITAN
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 764 }
-#elif WITH_TMC && !WITH_TITAN
+#elif WITH_TMC && !WITH_TITAN && !WITH_BMG
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 186 }
 #elif WITH_TITAN && !WITH_TMC
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 420 }
@@ -982,7 +1026,11 @@
  *   https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
+  #if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+    #define JUNCTION_DEVIATION_MM 0.022 // (mm) Distance from real junction edge
+  #else
+    #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
+  #endif
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
@@ -1161,7 +1209,11 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#define NOZZLE_TO_PROBE_OFFSET { -50, -10, -2 }
+#else
 #define NOZZLE_TO_PROBE_OFFSET { -35, -0, 0 }
+#endif
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1263,15 +1315,19 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
   #define INVERT_X_DIR false
 #else
   #define INVERT_X_DIR true
 #endif
 
-#define INVERT_Y_DIR true
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+  #define INVERT_Y_DIR false
+#else
+  #define INVERT_Y_DIR true
+#endif
 
-#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
   #define INVERT_Z_DIR true
 #else
   #define INVERT_Z_DIR false
@@ -1280,7 +1336,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#if WITH_TITAN
+#if defined(WITH_TITAN) || defined(WITH_BMG)
   #define INVERT_E0_DIR true
 #else
   #define INVERT_E0_DIR false
@@ -1591,7 +1647,13 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (50*60)
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+
+  // Slow down the X/Y homing
+  #define HOMING_FEEDRATE_XY (25*60)
+#else
+  #define HOMING_FEEDRATE_XY (50*60)
+#endif
 #define HOMING_FEEDRATE_Z  (4*60)
 
 // Validate that endstops are triggered on homing moves
@@ -2434,11 +2496,19 @@
 // some colors are predefined, see /src/lcd/dogm/u8g_dev_tft_480~.cpp Line 160
 // or use 16bit color (e.g. 0x0000 = black, 0xFFE0 = yellow)
 // see https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
-#define TFT_MARLINUI_COLOR COLOR_WHITE  // main foreground color
-#define TFT_MARLINBG_COLOR COLOR_BLACK  // background color
-#define TFT_BTCANCEL_COLOR COLOR_RED    // cancel button
-#define TFT_BTARROWS_COLOR COLOR_WHITE  // arrows up/down
-#define TFT_BTOKMENU_COLOR COLOR_GREEN  // enter button
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+  #define TFT_MARLINUI_COLOR 0xFFF9       // COLOR_WHITE  // main foreground color
+  #define TFT_MARLINBG_COLOR COLOR_BLACK  // background color
+  #define TFT_BTCANCEL_COLOR COLOR_RED    // cancel button
+  #define TFT_BTARROWS_COLOR COLOR_BLUE   // COLOR_WHITE  // arrows up/down
+  #define TFT_BTOKMENU_COLOR 0x07E0       // COLOR_GREEN  // enter button
+#else
+  #define TFT_MARLINUI_COLOR COLOR_WHITE  // main foreground color
+  #define TFT_MARLINBG_COLOR COLOR_BLACK  // background color
+  #define TFT_BTCANCEL_COLOR COLOR_RED    // cancel button
+  #define TFT_BTARROWS_COLOR COLOR_WHITE  // arrows up/down
+  #define TFT_BTOKMENU_COLOR COLOR_GREEN  // enter button
+#endif
 
 //
 // RepRapWorld REPRAPWORLD_KEYPAD v1.1
