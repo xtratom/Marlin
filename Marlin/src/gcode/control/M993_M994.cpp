@@ -22,7 +22,7 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#if ALL(HAS_SPI_FLASH, SDSUPPORT, MARLIN_DEV_MODE)
+#if ALL(HAS_SPI_FLASH, SDSUPPORT)
 
 #include "../gcode.h"
 #include "../../sd/cardreader.h"
