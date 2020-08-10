@@ -1026,7 +1026,7 @@
  *   https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+  #if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
     #define JUNCTION_DEVIATION_MM 0.022 // (mm) Distance from real junction edge
   #else
     #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
@@ -1209,7 +1209,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
 #define NOZZLE_TO_PROBE_OFFSET { -50, -10, -2 }
 #else
 #define NOZZLE_TO_PROBE_OFFSET { -35, -0, 0 }
@@ -1315,19 +1315,19 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
   #define INVERT_X_DIR false
 #else
   #define INVERT_X_DIR true
 #endif
 
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
   #define INVERT_Y_DIR false
 #else
   #define INVERT_Y_DIR true
 #endif
 
-#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
   #define INVERT_Z_DIR true
 #else
   #define INVERT_Z_DIR false
@@ -1647,7 +1647,7 @@
 #endif
 
 // Homing speeds (mm/m)
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
 
   // Slow down the X/Y homing
   #define HOMING_FEEDRATE_XY (25*60)
@@ -2496,7 +2496,7 @@
 // some colors are predefined, see /src/lcd/dogm/u8g_dev_tft_480~.cpp Line 160
 // or use 16bit color (e.g. 0x0000 = black, 0xFFE0 = yellow)
 // see https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
   #define TFT_MARLINUI_COLOR 0xFFF9       // COLOR_WHITE  // main foreground color
   #define TFT_MARLINBG_COLOR COLOR_BLACK  // background color
   #define TFT_BTCANCEL_COLOR COLOR_RED    // cancel button
