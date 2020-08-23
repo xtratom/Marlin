@@ -6,7 +6,7 @@
 class BedProbe {
 public:
   BedProbe(pin_type probe, glm::vec3 offset, glm::vec4& position, PrintBed& bed) : offset(offset), position(position), bed(bed) {
-    Gpio::attach(probe, std::bind(&BedProbe::interrupt, this, std::placeholders::_1));
+    Gpio::attach(probe, [this](GpioEvent& event){ this->interrupt(event); });
   }
 
   void interrupt(GpioEvent& event) {

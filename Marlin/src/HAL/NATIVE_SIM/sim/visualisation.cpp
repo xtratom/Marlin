@@ -29,18 +29,18 @@ Visualisation::Visualisation() :
   extruder0(E0_ENABLE_PIN, E0_DIR_PIN, E0_STEP_PIN, P_NC, P_NC, INVERT_E0_DIR),
   print_bed({X_BED_SIZE, Y_BED_SIZE}),
   probe(pin_type(Z_MIN_PROBE_PIN), NOZZLE_TO_PROBE_OFFSET, effector_pos, print_bed) {
-    Gpio::attach(x_axis.step_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); }); //todo this works too
-    Gpio::attach(x_axis.min_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(x_axis.max_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(y_axis.step_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(y_axis.min_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(y_axis.max_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(z_axis.step_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(z_axis.min_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(z_axis.max_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(extruder0.step_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(extruder0.min_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
-    Gpio::attach(extruder0.max_pin, std::bind(&Visualisation::gpio_event_handler, this, std::placeholders::_1));
+    Gpio::attach(x_axis.step_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(x_axis.min_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(x_axis.max_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(y_axis.step_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(y_axis.min_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(y_axis.max_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(z_axis.step_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(z_axis.min_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(z_axis.max_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(extruder0.step_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(extruder0.min_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
+    Gpio::attach(extruder0.max_pin, [this](GpioEvent &event){ this->gpio_event_handler(event); });
   }
 
 Visualisation::~Visualisation() {

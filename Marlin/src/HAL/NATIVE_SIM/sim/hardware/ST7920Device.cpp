@@ -14,13 +14,13 @@
 ST7920Device::ST7920Device(pin_type clk, pin_type mosi, pin_type cs,  pin_type beeper, pin_type enc1, pin_type enc2, pin_type enc_but, pin_type kill)
   : clk_pin(clk), mosi_pin(mosi), cs_pin(cs), beeper_pin(beeper), enc1_pin(enc1), enc2_pin(enc2), enc_but_pin(enc_but), kill_pin(kill) {
 
-  Gpio::attach(clk_pin, std::bind(&ST7920Device::interrupt, this, std::placeholders::_1));
-  Gpio::attach(cs_pin, std::bind(&ST7920Device::interrupt, this, std::placeholders::_1));
-  Gpio::attach(beeper_pin, std::bind(&ST7920Device::interrupt, this, std::placeholders::_1));
-  Gpio::attach(kill_pin, std::bind(&ST7920Device::interrupt, this, std::placeholders::_1));
-  Gpio::attach(enc_but_pin, std::bind(&ST7920Device::interrupt, this, std::placeholders::_1));
-  Gpio::attach(enc1_pin, std::bind(&ST7920Device::interrupt, this, std::placeholders::_1));
-  Gpio::attach(enc2_pin, std::bind(&ST7920Device::interrupt, this, std::placeholders::_1));
+  Gpio::attach(clk_pin, [this](GpioEvent& event){ this->interrupt(event); });
+  Gpio::attach(cs_pin, [this](GpioEvent& event){ this->interrupt(event); });
+  Gpio::attach(beeper_pin, [this](GpioEvent& event){ this->interrupt(event); });
+  Gpio::attach(kill_pin, [this](GpioEvent& event){ this->interrupt(event); });
+  Gpio::attach(enc_but_pin, [this](GpioEvent& event){ this->interrupt(event); });
+  Gpio::attach(enc1_pin, [this](GpioEvent& event){ this->interrupt(event); });
+  Gpio::attach(enc2_pin, [this](GpioEvent& event){ this->interrupt(event); });
 
   glGenTextures(1, &texture_id);
   glBindTexture(GL_TEXTURE_2D, texture_id);
