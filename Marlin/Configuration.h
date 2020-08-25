@@ -1653,7 +1653,7 @@
   // Slow down the X/Y homing
   #define HOMING_FEEDRATE_XY (25*60)
 #else
-  #define HOMING_FEEDRATE_XY (4*60)
+  #define HOMING_FEEDRATE_XY (40*60)
 #endif
 #define HOMING_FEEDRATE_Z  (4*60)
 
