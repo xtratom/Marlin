@@ -2515,9 +2515,9 @@
 //
 #define TOUCH_SCREEN
 //DONE BY CHITU BOARD
-//#if ENABLED(TOUCH_SCREEN)
-  //#define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
-  //#define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
+#if ENABLED(TOUCH_SCREEN)
+  #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
+  #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
 
   //#define TOUCH_SCREEN_CALIBRATION
 
@@ -2525,7 +2525,7 @@
   //#define XPT2046_Y_CALIBRATION -8981
   //#define XPT2046_X_OFFSET        -43
   //#define XPT2046_Y_OFFSET        257
-//#endif
+#endif
 
 // Change colors
 // some colors are predefined, see /src/lcd/dogm/u8g_dev_tft_480~.cpp Line 160
