@@ -19,23 +19,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
+#include <HardwareSerial.h>
+#include <WString.h>
 
-#include "../../../inc/MarlinConfig.h"
+#include "../../inc/MarlinConfigPre.h"
+#if ENABLED(EMERGENCY_PARSER)
+  #include "../../feature/e_parser.h"
+#endif
 
-#if ENABLED(NOZZLE_PARK_FEATURE)
+class MarlinSerial : public HardwareSerial {
+public:
+  MarlinSerial(struct usart_dev *usart_device, uint8 tx_pin, uint8 rx_pin) :
+    HardwareSerial(usart_device, tx_pin, rx_pin)
+    #if ENABLED(EMERGENCY_PARSER)
+      , emergency_state(EmergencyParser::State::EP_RESET)
+    #endif
+    { }
 
-#include "../../gcode.h"
-#include "../../../libs/nozzle.h"
-#include "../../../module/motion.h"
+  #if ENABLED(EMERGENCY_PARSER)
+    EmergencyParser::State emergency_state;
+  #endif
+};
 
-/**
- * G27: Park the nozzle
- */
-void GcodeSuite::G27() {
-  // Don't allow nozzle parking without homing first
-  if (homing_needed_error()) return;
-  nozzle.park(parser.ushortval('P'));
-}
-
-#endif // NOZZLE_PARK_FEATURE
+extern MarlinSerial MSerial1;
+extern MarlinSerial MSerial2;
+extern MarlinSerial MSerial3;
+extern MarlinSerial MSerial4;
+extern MarlinSerial MSerial5;

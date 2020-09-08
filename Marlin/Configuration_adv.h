@@ -1065,6 +1065,7 @@
   //#define LED_CONTROL_MENU
   #if ENABLED(LED_CONTROL_MENU)
     #define LED_COLOR_PRESETS                 // Enable the Preset Color menu option
+    //#define NEO2_COLOR_PRESETS              // Enable a second NeoPixel Preset Color menu option
     #if ENABLED(LED_COLOR_PRESETS)
       #define LED_USER_PRESET_RED        255  // User defined RED value
       #define LED_USER_PRESET_GREEN      128  // User defined GREEN value
@@ -1072,6 +1073,14 @@
       #define LED_USER_PRESET_WHITE      255  // User defined WHITE value
       #define LED_USER_PRESET_BRIGHTNESS 255  // User defined intensity
       //#define LED_USER_PRESET_STARTUP       // Have the printer display the user preset color on startup
+    #endif
+    #if ENABLED(NEO2_COLOR_PRESETS)
+      #define NEO2_USER_PRESET_RED        255  // User defined RED value
+      #define NEO2_USER_PRESET_GREEN      128  // User defined GREEN value
+      #define NEO2_USER_PRESET_BLUE         0  // User defined BLUE value
+      #define NEO2_USER_PRESET_WHITE      255  // User defined WHITE value
+      #define NEO2_USER_PRESET_BRIGHTNESS 255  // User defined intensity
+      //#define NEO2_USER_PRESET_STARTUP       // Have the printer display the user preset color on startup for the second strip
     #endif
   #endif
 
@@ -2484,7 +2493,7 @@
   #define E7_HYBRID_THRESHOLD     30
 
   /**
-   * Use StallGuard2 to home / probe X, Y, Z.
+   * Use StallGuard to home / probe X, Y, Z.
    *
    * TMC2130, TMC2160, TMC2209, TMC2660, TMC5130, and TMC5160 only
    * Connect the stepper driver's DIAG1 pin to the X/Y endstop pin.
@@ -2505,6 +2514,8 @@
    *
    * IMPROVE_HOMING_RELIABILITY tunes acceleration and jerk when
    * homing and adds a guard period for endstop triggering.
+   *
+   * Comment *_STALL_SENSITIVITY to disable sensorless homing for that axis.
    */
   //#define SENSORLESS_HOMING // StallGuard capable drivers only
 

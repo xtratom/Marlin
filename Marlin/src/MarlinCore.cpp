@@ -30,6 +30,10 @@
 
 #include "MarlinCore.h"
 
+#if ENABLED(MARLIN_DEV_MODE)
+  #warning "WARNING! Disable MARLIN_DEV_MODE for the final build!"
+#endif
+
 #include "HAL/shared/Delay.h"
 #include "HAL/shared/esp_wifi.h"
 
@@ -68,9 +72,9 @@
 #endif
 
 #if ENABLED(DWIN_CREALITY_LCD)
-  #include "lcd/dwin/dwin.h"
+  #include "lcd/dwin/e3v2/dwin.h"
   #include "lcd/dwin/dwin_lcd.h"
-  #include "lcd/dwin/rotary_encoder.h"
+  #include "lcd/dwin/e3v2/rotary_encoder.h"
 #endif
 
 #if ENABLED(IIC_BL24CXX_EEPROM)
@@ -989,6 +993,10 @@ void setup() {
   // Set up LEDs early
   #if HAS_COLOR_LEDS
     SETUP_RUN(leds.setup());
+  #endif
+
+  #if ENABLED(NEOPIXEL2_SEPARATE)
+    SETUP_RUN(leds2.setup());
   #endif
 
   #if ENABLED(USE_CONTROLLER_FAN)     // Set up fan controller to initialize also the default configurations.
