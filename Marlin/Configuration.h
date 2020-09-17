@@ -22,24 +22,38 @@
 #pragma once
 
 //JUST uncomment the option for your machine
-//#define V6_330_TITAN_TMC 1
-//#define V6_330_TITAN_NO_TMC 1
-//  #define V6_330_NO_TITAN_TMC 1
-//#define V6_330_NO_TITAN_NO_TMC 1
+// #define V6_330_TITAN_TMC 1
+// #define V6_330_TITAN_NO_TMC 1
+// #define V6_330_NO_TITAN_TMC 1
+// #define V6_330_NO_TITAN_NO_TMC 1
 // #define V6_400_TITAN_TMC 1
 // #define V6_400_NO_TITAN_TMC 1
-//#define V6_500_TITAN_TMC 1
+// #define V6_500_TITAN_TMC 1
 
 // #define V5_330_TITAN_TMC 1
 // #define V5_330_TITAN_NO_TMC 1
 // #define V5_330_NO_TITAN_TMC 1
 // #define V5_330_NO_TITAN_NO_TMC 1
+
 // #define XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL 1
+// #define XY3_V5_330_NO_TITAN_TMC_NO_ABL 1
+
+// #define D01_V8_220_TITAN_TMC_NO_ABL 1
 
 // XY2 Thanks to Emmanuel Hayez!
 // #define XY2_V6_255_NO_TITAN_TMC 1
 // #define XY2_V6_255_TITAN_TMC 1
 // #define XY2_V6_255_BMG_TMC 1
+// #define XY2_V6_255M_BMG_TMC 1
+
+// #define XY2_V5_255_NO_TITAN_TMC 1
+// #define XY2_V5_255_TITAN_TMC 1
+// #define XY2_V5_255_TITAN_NO_TMC 1
+// #define XY2_V5_255_NO_TITAN_NO_TMC 1
+// #define XY2_V5_220_NO_TITAN_TMC 1
+// #define XY2_V5_220_TITAN_TMC 1
+// #define XY2_V5_220_NO_TITAN_NO_TMC 1
+// #define XY2_V5_220_TITAN_NO_TMC 1
 
 // #define LVGL_UI
 // #define CLASSIC_UI
@@ -155,10 +169,37 @@
   #define CUSTOM_MACHINE_NAME "Tronxy X5SA V5 330"
   #define COREXY
 
+#elif D01_V8_220_TITAN_TMC_NO_ABL
+  // The V8-190729 is similar to the V5
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define D01_MODELS 1
+  #define WITHOUT_ABL 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 220
+
+  #define CUSTOM_MACHINE_NAME "Tronxy D01 220"
+  #define COREXY
+
+#elif XY3_V5_330_NO_TITAN_TMC_NO_ABL
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define WITHOUT_ABL 1
+  #define XY3_MODELS 1
+  #define X_BED_SIZE 300
+  #define Y_BED_SIZE 300
+  #define Z_MAX_POS 330
+  #define CUSTOM_MACHINE_NAME "Tronxy XY3 300"
+
 #elif XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
   #define MOTHERBOARD BOARD_CHITU3D_V5
   //#define WITH_TMC 1
   //#define WITH_TITAN 1
+  #define WITHOUT_ABL 1
+  #define XY3_MODELS 1
   #define X_BED_SIZE 310
   #define Y_BED_SIZE 310
   #define Z_MAX_POS 400
@@ -168,6 +209,7 @@
   #define MOTHERBOARD BOARD_CHITU3D_V6
   #define WITH_TMC 1
   //#define WITH_TITAN 1
+  #define XY2_MODELS 1
   #define X_BED_SIZE 255
   #define Y_BED_SIZE 255
   #define Z_MAX_POS 260
@@ -177,9 +219,10 @@
   #define MOTHERBOARD BOARD_CHITU3D_V6
   #define WITH_TMC 1
   #define WITH_TITAN 1
+  #define XY2_MODELS 1
   #define X_BED_SIZE 255
   #define Y_BED_SIZE 255
-  #define Z_MAX_POS 260
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
   #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
 
 #elif XY2_V6_255_BMG_TMC
@@ -187,10 +230,110 @@
   #define WITH_TMC 1
   //#define WITH_TITAN 1
   #define WITH_BMG 1
+  #define XY2_MODELS 1
   #define X_BED_SIZE 255
   #define Y_BED_SIZE 255
   #define Z_MAX_POS 260
   #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V6_255M_BMG_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V6
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define WITH_BMG 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 330
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO M"
+  // My config optimisation
+  #define S_CURVE_ACCELERATION
+  #define DEFAULT_Kp 18.33
+  #define DEFAULT_Ki 1.15
+  #define DEFAULT_Kd 73.12
+
+#elif XY2_V5_255_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_255_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_255_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 0
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define T2_LEADSCREW 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_255_NO_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 255
+  #define Y_BED_SIZE 255
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2PRO"
+
+#elif XY2_V5_220_NO_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
+
+#elif XY2_V5_220_TITAN_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  #define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
+
+#elif XY2_V5_220_NO_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define T2_LEADSCREW 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 260
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
+
+#elif XY2_V5_220_TITAN_NO_TMC
+  #define MOTHERBOARD BOARD_CHITU3D_V5
+  //#define WITH_TMC 1
+  #define WITH_TITAN 1
+  #define XY2_MODELS 1
+  #define T2_LEADSCREW 1
+  #define X_BED_SIZE 220
+  #define Y_BED_SIZE 220
+  #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
+  #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
 
 #endif
 
@@ -668,9 +811,12 @@
     #define DEFAULT_Ki_LIST {   1.08,   1.0 }
     #define DEFAULT_Kd_LIST { 114.00, 112.0 }
   #else
-    #define DEFAULT_Kp  22.20
-    #define DEFAULT_Ki   1.08
-    #define DEFAULT_Kd 114.00
+    // If we did not set specific parameters then we use one of the default one
+    #ifndef DEFAULT_Kp
+      #define DEFAULT_Kp  22.20
+      #define DEFAULT_Ki   1.08
+      #define DEFAULT_Kd 114.00
+    #endif
   #endif
 #endif // PIDTEMP
 
@@ -942,9 +1088,17 @@
 #elif WITH_TMC && !WITH_TITAN && !WITH_BMG
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 186 }
 #elif WITH_TITAN && !WITH_TMC
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 420 }
+  #if defined(T2_LEADSCREW)
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, 420 }
+  #else
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 420 }
+  #endif
 #else
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
+  #if defined(T2_LEADSCREW)
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, 93 }
+  #else
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
+  #endif
 #endif
 
 // #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 420 }
@@ -1020,7 +1174,7 @@
  *   https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+  #ifdef XY2_MODELS
     #define JUNCTION_DEVIATION_MM 0.022 // (mm) Distance from real junction edge
   #else
     #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
@@ -1095,7 +1249,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+#ifdef WITHOUT_ABL
   #define PROBE_MANUALLY
 #else
   #define FIX_MOUNTED_PROBE
@@ -1203,8 +1357,8 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
-#define NOZZLE_TO_PROBE_OFFSET { -50, -10, -2 }
+#ifdef XY2_MODELS
+#define NOZZLE_TO_PROBE_OFFSET { -50, -10, 0 }
 #else
 #define NOZZLE_TO_PROBE_OFFSET { -35, -0, 0 }
 #endif
@@ -1260,7 +1414,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
-#ifndef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+#ifndef WITHOUT_ABL
 #define Z_MIN_PROBE_REPEATABILITY_TEST
 #endif
 
@@ -1309,19 +1463,19 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY3_MODELS) || defined(XY2_MODELS) || defined(D01_MODELS)
   #define INVERT_X_DIR false
 #else
   #define INVERT_X_DIR true
 #endif
 
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY2_MODELS) || defined(D01_MODELS)
   #define INVERT_Y_DIR false
 #else
   #define INVERT_Y_DIR true
 #endif
 
-#if defined(XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL) || defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY3_MODELS) || defined(XY2_MODELS)
   #define INVERT_Z_DIR true
 #else
   #define INVERT_Z_DIR false
@@ -1478,7 +1632,7 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#ifdef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+#if WITHOUT_ABL
   #define MESH_BED_LEVELING
 #else
   #define AUTO_BED_LEVELING_BILINEAR
@@ -1642,10 +1796,10 @@
 #endif
 
 // Homing speeds (mm/m)
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#if defined(XY2_MODELS)
 
   // Slow down the X/Y homing
-  #define HOMING_FEEDRATE_XY (25*60)
+  #define HOMING_FEEDRATE_XY (35*60)
 #else
   #define HOMING_FEEDRATE_XY (40*60)
 #endif
@@ -2527,7 +2681,7 @@
 // some colors are predefined, see /src/lcd/dogm/u8g_dev_tft_480~.cpp Line 160
 // or use 16bit color (e.g. 0x0000 = black, 0xFFE0 = yellow)
 // see https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
-#if defined(XY2_V6_255_NO_TITAN_TMC) || defined(XY2_V6_255_TITAN_TMC) || defined(XY2_V6_255_BMG_TMC)
+#ifdef XY2_MODELS
   #define TFT_MARLINUI_COLOR 0xFFF9       // COLOR_WHITE  // main foreground color
   #define TFT_MARLINBG_COLOR COLOR_BLACK  // background color
   #define TFT_BTCANCEL_COLOR COLOR_RED    // cancel button

@@ -1596,7 +1596,7 @@
     #define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
   #endif
 
-  #ifndef XY3_V5_310_NO_TITAN_NO_TMC_NO_ABL
+  #if !defined(WITHOUT_ABL)
     #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #endif
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
