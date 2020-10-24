@@ -41,6 +41,8 @@
   #include "usb_flashdrive/Sd2Card_FlashDrive.h"
 #elif ENABLED(SDIO_SUPPORT)
   #include "Sd2Card_sdio.h"
+#elif ENABLED(SD_SIMULATOR)
+  #include "Sd2Card_sim.h"
 #else
   #include "Sd2Card.h"
 #endif

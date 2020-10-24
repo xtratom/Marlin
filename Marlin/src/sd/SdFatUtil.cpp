@@ -46,6 +46,11 @@
     return &top - reinterpret_cast<char*>(sbrk(0));
   }
 
+#elif __PLAT_NATIVE_SIM__
+  int SdFatUtil::FreeRam() {
+    return 0xFFFFFF;
+  }
+
 #else
 
   extern char* __brkval;
