@@ -21,9 +21,7 @@
  */
 #pragma once
 
-#include "../inc/MarlinConfig.h"
-
-#if ENABLED(SD_SIMULATOR)
+#include "../inc/MarlinConfigPre.h"
 
 /**
  * Instructions for create a FAT image:
@@ -33,9 +31,9 @@
  *    -s NUM is the number of sectors
  * 3) Copy files to the image:
  *    $ mcopy -i fs.img CFFFP_flow_calibrator.gcode ::/
- * 4) Configure it:
- *    // #define SD_SIMULATOR_FAT_IMAGE "/full/path/to/fs.img"
+ * 4) Set the path for SD_SIMULATOR_FAT_IMAGE
  */
+//#define SD_SIMULATOR_FAT_IMAGE "/full/path/to/fs.img"
 #ifndef SD_SIMULATOR_FAT_IMAGE
   #error "You need set SD_SIMULATOR_FAT_IMAGE with a path for a FAT filesystem image."
 #endif
@@ -59,5 +57,3 @@ class Sd2Card {
       return true;
     }
 };
-
-#endif // SDIO_SUPPORT
