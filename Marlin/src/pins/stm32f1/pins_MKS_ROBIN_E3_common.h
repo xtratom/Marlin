@@ -132,7 +132,7 @@
  *                -----                                      -----                                     -----
  *                EXP1                                       EXP2                                      EXP3
  */
-#if HAS_SPI_LCD
+#if HAS_WIRED_LCD
 
   #define BEEPER_PIN                        PC1
   #define BTN_ENC                           PC3
@@ -154,7 +154,7 @@
   #else
 
     #define LCD_PINS_D4                     PA6
-    #if ENABLED(ULTIPANEL)
+    #if IS_ULTIPANEL
       #define LCD_PINS_D5                   PA7
       #define LCD_PINS_D6                   PC4
       #define LCD_PINS_D7                   PC5
@@ -162,12 +162,12 @@
 
   #endif // !MKS_MINI_12864
 
-#endif // HAS_SPI_LCD
+#endif // HAS_WIRED_LCD
 
 //
 // SD Card
 //
-#define ENABLE_SPI2
+#define SPI_DEVICE                             2
 #define SD_DETECT_PIN                       PC10
 #define SCK_PIN                             PB13
 #define MISO_PIN                            PB14
