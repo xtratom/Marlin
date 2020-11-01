@@ -1,9 +1,9 @@
 #!/bin/bash
 
 UI=(
-  COLOR_UI
-  CLASSIC_UI
-  LVGL_UI
+  TFT_COLOR_UI
+  TFT_CLASSIC_UI
+  TFT_LVGL_UI
 )
 
 CONFIGS=(

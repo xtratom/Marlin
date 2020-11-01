@@ -55,9 +55,9 @@
 // #define XY2_V5_220_NO_TITAN_NO_TMC 1
 // #define XY2_V5_220_TITAN_NO_TMC 1
 
-// #define LVGL_UI
-// #define CLASSIC_UI
-// #define COLOR_UI
+// #define TFT_LVGL_UI
+// #define TFT_CLASSIC_UI
+// #define TFT_COLOR_UI
 
 #if V6_330_TITAN_TMC
   #define MOTHERBOARD BOARD_CHITU3D_V6
@@ -407,7 +407,7 @@
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
-#ifdef CLASSIC_UI
+#ifdef TFT_CLASSIC_UI
 #define CUSTOM_STATUS_SCREEN_IMAGE
 #endif
 
@@ -1576,7 +1576,7 @@
 
   // Set one or more commands to execute on filament runout.
   // (After 'M412 H' Marlin will ask the host to handle the process.)
-  #ifndef LVGL_UI
+  #ifndef TFT_LVGL_UI
   #define FILAMENT_RUNOUT_SCRIPT "M600"
   #else
   #define FILAMENT_RUNOUT_SCRIPT "M25"
@@ -1746,7 +1746,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#ifndef LVGL_UI
+#ifndef TFT_LVGL_UI
 #define LCD_BED_LEVELING
 #endif
 #if ENABLED(LCD_BED_LEVELING)
@@ -2665,7 +2665,7 @@
 //
 // 480x320, 3.5", FSMC Stock Display from TronxXY
 //
-//#define TFT_TRONXY_X5SA
+#define TFT_TRONXY_X5SA
 
 //
 // 480x320, 3.5", FSMC Stock Display from AnyCubic
@@ -2702,7 +2702,7 @@
  *   TFT_COLOR_UI   - Marlin Default Menus, Touch Friendly, using full TFT capabilities
  *   TFT_LVGL_UI    - A Modern UI using LVGL
  *
- *   For LVGL_UI also copy the 'assets' folder from the build directory to the
+ *   For TFT_LVGL_UI also copy the 'assets' folder from the build directory to the
  *   root of your SD card, together with the compiled firmware.
  */
 //#define TFT_CLASSIC_UI
@@ -2731,7 +2731,7 @@
 //
 // ADS7843/XPT2046 ADC Touchscreen such as ILI9341 2.8
 //
-#ifndef LVGL_UI
+#ifndef TFT_LVGL_UI
   #define TOUCH_SCREEN
 #endif
 //DONE BY CHITU BOARD
