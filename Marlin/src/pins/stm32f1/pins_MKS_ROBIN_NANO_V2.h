@@ -367,3 +367,6 @@
 #if ENABLED(SPEAKER) && BEEPER_PIN == PC5
   #error "MKS Robin nano default BEEPER_PIN is not a SPEAKER."
 #endif
+
+#define SERIAL_USB_NUMBER                      3
+#define SERIAL_WIFI_NUMBER                     1
