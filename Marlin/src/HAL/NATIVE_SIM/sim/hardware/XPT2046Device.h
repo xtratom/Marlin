@@ -5,26 +5,23 @@
 
 #include <list>
 #include <deque>
-#include "Gpio.h"
+#include "SPISlavePeripheral.h"
 
-class XPT2046Device: public Peripheral {
+class XPT2046Device: public SPISlavePeripheral {
 public:
-  XPT2046Device(pin_type clk, pin_type mosi, pin_type cs, pin_type miso);
-  virtual ~XPT2046Device();
-  void update();
-  void interrupt(GpioEvent& ev);
+  XPT2046Device(pin_type clk, pin_type mosi, pin_type miso, pin_type cs) : SPISlavePeripheral(clk, mosi, miso, cs) {}
+  virtual ~XPT2046Device() {};
+
+  void update() {}
   void ui_callback(UiWindow* window);
 
-  pin_type clk_pin, mosi_pin, cs_pin, miso_pin;
+  void onByteReceived(uint8_t _byte) override;
+  void onEndTransaction() override {
+    SPISlavePeripheral::onEndTransaction();
+    dirty = false;
+  };
 
-  uint8_t incomming_byte = 0;
-  uint8_t incomming_bit_count = 0;
-  uint8_t incomming_byte_count = 0;
-
+  uint16_t lastClickX = 0;
+  uint16_t lastClickY = 0;
   bool dirty = false;
-  uint16_t clickX = 0;
-  uint16_t clickY = 0;
-  std::chrono::steady_clock clock;
-  std::chrono::steady_clock::time_point last_update;
-  float scaler;
 };
