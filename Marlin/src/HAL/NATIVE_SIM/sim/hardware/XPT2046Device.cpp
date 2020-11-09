@@ -15,6 +15,7 @@
 void XPT2046Device::onByteReceived(uint8_t _byte) {
   SPISlavePeripheral::onByteReceived(_byte);
   switch (_byte) {
+    //TODO: touch hold
     case XPT2046_Z1:
       if (dirty) {
         setResponse16(XPT2046_Z1_THRESHOLD); // respond that we have data to send

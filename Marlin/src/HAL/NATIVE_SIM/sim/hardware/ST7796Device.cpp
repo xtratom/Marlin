@@ -17,12 +17,9 @@
 #define ST7796S_RASET      0x2B // Row Address Set
 #define ST7796S_RAMWR      0x2C // Memory Write
 
-ST7796Device::ST7796Device(pin_type clk, pin_type mosi, pin_type cs, pin_type dc, pin_type beeper, pin_type enc1, pin_type enc2, pin_type enc_but, pin_type kill)
-  : clk_pin(clk), mosi_pin(mosi), cs_pin(cs), dc_pin(dc), beeper_pin(beeper), enc1_pin(enc1), enc2_pin(enc2), enc_but_pin(enc_but), kill_pin(kill), touch(TOUCH_SCK_PIN, TOUCH_MOSI_PIN, TOUCH_CS_PIN, TOUCH_MISO_PIN)
+ST7796Device::ST7796Device(pin_type clk, pin_type miso, pin_type mosi, pin_type tft_cs, pin_type touch_cs, pin_type dc, pin_type beeper, pin_type enc1, pin_type enc2, pin_type enc_but, pin_type kill)
+  : SPISlavePeripheral(clk, miso, mosi, tft_cs), dc_pin(dc), beeper_pin(beeper), enc1_pin(enc1), enc2_pin(enc2), enc_but_pin(enc_but), kill_pin(kill), touch(clk, miso, mosi, touch_cs)
   {
-
-  Gpio::attach(clk_pin, [this](GpioEvent& event){ this->interrupt(event); });
-  Gpio::attach(cs_pin, [this](GpioEvent& event){ this->interrupt(event); });
   Gpio::attach(dc_pin, [this](GpioEvent& event){ this->interrupt(event); });
   Gpio::attach(beeper_pin, [this](GpioEvent& event){ this->interrupt(event); });
   Gpio::attach(kill_pin, [this](GpioEvent& event){ this->interrupt(event); });
@@ -82,29 +79,8 @@ void ST7796Device::update() {
   }
 }
 
-static uint8_t command = 0;
-static std::vector<uint8_t> data;
-
 void ST7796Device::interrupt(GpioEvent& ev) {
-  if (ev.pin_id == clk_pin && ev.event == GpioEvent::FALL && Gpio::pin_map[cs_pin].value == 0) {
-    incomming_byte = (incomming_byte << 1) | Gpio::pin_map[mosi_pin].value;
-    if (++incomming_bit_count == 8) {
-      if (Gpio::pin_map[dc_pin].value) {
-        //data
-        data.push_back(incomming_byte);
-      }
-      else {
-        //command
-        command = incomming_byte;
-      }
-      incomming_bit_count = 0;
-    }
-  } else if (ev.pin_id == cs_pin && ev.event == GpioEvent::RISE) {
-    //end of transaction, execute pending command
-    incomming_bit_count = incomming_byte_count = incomming_byte = 0;
-    process_command({command, data});
-    data.clear();
-  } else if (ev.pin_id == beeper_pin) {
+  if (ev.pin_id == beeper_pin) {
     if (ev.event == GpioEvent::RISE) {
       // play sound
     } else if (ev.event == GpioEvent::FALL) {
@@ -114,6 +90,25 @@ void ST7796Device::interrupt(GpioEvent& ev) {
     //start new command, execute last one
     process_command({command, data});
     data.clear();
+  }
+}
+
+void ST7796Device::onEndTransaction() {
+  SPISlavePeripheral::onEndTransaction();
+  //end of transaction, execute pending command
+  process_command({command, data});
+  data.clear();
+};
+
+void ST7796Device::onByteReceived(uint8_t _byte) {
+  SPISlavePeripheral::onByteReceived(_byte);
+  if (Gpio::pin_map[dc_pin].value) {
+    //data
+    data.push_back(_byte);
+  }
+  else {
+    //command
+    command = _byte;
   }
 }
 

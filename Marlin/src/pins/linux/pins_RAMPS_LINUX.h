@@ -604,6 +604,19 @@
     #elif ENABLED(AZSMZ_12864)
 
       // Pins only defined for RAMPS_SMART currently
+    #elif ENABLED(TFT_COLOR_UI)
+      #define TFT_A0_PIN            LCD_PINS_D6
+      #define TFT_CS_PIN            LCD_PINS_RS
+      #define TFT_DC_PIN            LCD_PINS_D6
+      #define TFT_SCK_PIN           SCK_PIN
+      #define TFT_MOSI_PIN          MOSI_PIN
+
+      #define BTN_EN1                         40
+      #define BTN_EN2                         63
+      #define BTN_ENC                         59
+      #define BEEPER_PIN                      42
+
+      #define TOUCH_CS_PIN                    33
 
     #else
 

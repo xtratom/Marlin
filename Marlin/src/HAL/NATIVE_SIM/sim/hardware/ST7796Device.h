@@ -7,10 +7,12 @@
 #include <deque>
 #include "Gpio.h"
 
+#include "SPISlavePeripheral.h"
 #include "XPT2046Device.h"
 
-class ST7796Device: public Peripheral {
+class ST7796Device: public SPISlavePeripheral {
 public:
+  //TODO: support encoder in the TFT
   enum KeyName {
     KILL_BUTTON, ENCODER_BUTTON, COUNT
   };
@@ -21,18 +23,20 @@ public:
     std::vector<uint8_t> data;
   };
 
-  ST7796Device(pin_type clk, pin_type mosi, pin_type cs, pin_type dc, pin_type beeper, pin_type enc1, pin_type enc2, pin_type enc_but, pin_type kill);
+  ST7796Device(pin_type clk, pin_type miso, pin_type mosi, pin_type tft_cs, pin_type touch_cs, pin_type dc, pin_type beeper, pin_type enc1, pin_type enc2, pin_type enc_but, pin_type kill);
   virtual ~ST7796Device();
   void process_command(Command cmd);
   void update();
   void interrupt(GpioEvent& ev);
   void ui_callback(UiWindow* window);
 
-  pin_type clk_pin, mosi_pin, cs_pin, dc_pin, beeper_pin, enc1_pin, enc2_pin, enc_but_pin, kill_pin;
+  void onByteReceived(uint8_t _byte) override;
+  void onEndTransaction() override;
 
-  uint8_t incomming_byte = 0;
-  uint8_t incomming_bit_count = 0;
-  uint8_t incomming_byte_count = 0;
+  pin_type dc_pin, beeper_pin, enc1_pin, enc2_pin, enc_but_pin, kill_pin;
+
+  uint8_t command = 0;
+  std::vector<uint8_t> data;
   uint8_t incomming_cmd[3] = {};
   std::deque<Command> cmd_in;
 
