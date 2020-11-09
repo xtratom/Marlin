@@ -28,6 +28,7 @@
 #ifdef __PLAT_NATIVE_SIM__
 
 #include "../../inc/MarlinConfig.h"
+#include <SPI.h>
 
 // Software SPI
 
@@ -96,5 +97,90 @@ void spiSendBlock(uint8_t token, const uint8_t* buf) {
   for (uint16_t i = 0; i < 512; i++)
     (void)spiTransfer(buf[i]);
 }
+
+SPIClass::SPIClass(uint8_t spiPortNumber) {
+  _settings[0].dataSize = DATA_SIZE_8BIT;
+  _settings[0].clock = 0;
+  _settings[0].dataMode = 0;
+  _settings[0].bitOrder = 0;
+  setModule(spiPortNumber);
+}
+
+void SPIClass::begin() {
+
+}
+
+void SPIClass::end() {
+
+}
+
+void SPIClass::beginTransaction(const SPISettings& s) {
+  setClock(s.clock);
+  setDataMode(s.dataMode);
+  setDataSize(s.dataSize);
+  setBitOrder(s.bitOrder);
+}
+
+void SPIClass::endTransaction() {
+
+}
+
+// Transfer using 1 "Data Size"
+uint8_t SPIClass::transfer(uint16_t data) {
+  return spiTransfer(data);
+}
+// Transfer 2 bytes in 8 bit mode
+uint16_t SPIClass::transfer16(uint16_t data) {
+  return (spiTransfer(data >> 8) << 8) | (spiTransfer(data & 0xFF) & 0xFF);
+}
+
+void SPIClass::send(uint8_t data) {
+  spiSend(data);
+}
+
+uint16_t SPIClass::read() {
+  return spiRec();
+}
+
+void SPIClass::read(uint8_t *buf, uint32_t len) {
+  spiRead(buf, len);
+}
+
+void SPIClass::dmaSend(void *buf, uint16_t length, bool minc) {
+  uint8_t *ptr = (uint8_t*)buf;
+  while(length--) {
+    if (_currentSetting->dataSize == DATA_SIZE_16BIT) spiSend(*(ptr + 1));
+    spiSend(*ptr);
+    if (minc) ptr += _currentSetting->dataSize;
+  }
+}
+
+uint8_t SPIClass::dmaTransfer(const void * transmitBuf, void * receiveBuf, uint16_t length) {
+  //todo: transmit?!
+  read((uint8_t*)receiveBuf, length);
+  return 1;
+}
+
+void SPIClass::setModule(uint8_t device) {
+  _currentSetting = &_settings[device - 1];
+}
+
+void SPIClass::setClock(uint32_t clock) {
+  _currentSetting->clock = clock;
+}
+
+void SPIClass::setBitOrder(uint8_t bitOrder) {
+  _currentSetting->bitOrder = bitOrder;
+}
+
+void SPIClass::setDataMode(uint8_t dataMode) {
+  _currentSetting->dataMode = dataMode;
+}
+
+void SPIClass::setDataSize(uint32_t ds) {
+  _currentSetting->dataSize = ds;
+}
+
+SPIClass SPI(1);
 
 #endif // __PLAT_NATIVE_SIM__
