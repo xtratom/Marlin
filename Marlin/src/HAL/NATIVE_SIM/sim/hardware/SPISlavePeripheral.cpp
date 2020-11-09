@@ -9,6 +9,7 @@ SPISlavePeripheral::~SPISlavePeripheral() {};
 
 void SPISlavePeripheral::onBeginTransaction() {
   // printf("SPISlavePeripheral::onBeginTransaction\n");
+  insideTransaction = true;
   outgoing_byte = 0;
   outgoing_bit_count = 0;
   if (CPHA == 0) {
@@ -29,6 +30,7 @@ void SPISlavePeripheral::transmitCurrentBit() {
 
 void SPISlavePeripheral::onEndTransaction() {
   // printf("SPISlavePeripheral::onEndTransaction\n");
+  insideTransaction = false;
 }
 
 void SPISlavePeripheral::onBitReceived(uint8_t _bit) {
@@ -92,12 +94,12 @@ void SPISlavePeripheral::setResponse(uint8_t *_bytes, size_t count) {
 
 void SPISlavePeripheral::spiInterrupt(GpioEvent& ev) {
   if (ev.pin_id == cs_pin) {
-    if (ev.event == GpioEvent::FALL && Gpio::pin_map[cs_pin].value == 0) onBeginTransaction();
-    else if (ev.event == GpioEvent::RISE && Gpio::pin_map[cs_pin].value != 0) onEndTransaction();
+    if (ev.event == GpioEvent::FALL) onBeginTransaction();
+    else if (ev.event == GpioEvent::RISE && insideTransaction) onEndTransaction();
     return;
   }
 
-  if (Gpio::pin_map[cs_pin].value != 0) return;
+  if (Gpio::pin_map[cs_pin].value != 0 || !insideTransaction) return;
 
   if (ev.pin_id == clk_pin) {
     // == Read ==

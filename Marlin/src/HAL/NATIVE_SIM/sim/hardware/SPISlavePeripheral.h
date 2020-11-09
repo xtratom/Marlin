@@ -36,4 +36,5 @@ private:
   uint8_t outgoing_bit_count = 0;
   uint8_t *responseData = nullptr;
   size_t responseDataSize = 0;
+  bool insideTransaction = false;
 };
