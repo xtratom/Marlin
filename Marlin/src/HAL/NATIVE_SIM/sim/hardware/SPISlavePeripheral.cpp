@@ -47,17 +47,18 @@ void SPISlavePeripheral::onByteReceived(uint8_t _byte) {
 
 void SPISlavePeripheral::onResponseSent() {
   // printf("SPISlavePeripheral::onResponseSent\n");
+  hasDataToSend = false;
 }
 
 void SPISlavePeripheral::onByteSent(uint8_t _byte) {
   // printf("SPISlavePeripheral::onByteSent: %d\n", _byte);
-  if (responseDataSize ==  0) {
-    onResponseSent();
-  }
-  else {
+  if (responseDataSize > 0) {
     outgoing_byte = *responseData;
     responseData++;
     responseDataSize--;
+  }
+  else if (hasDataToSend) {
+    onResponseSent();
   }
   outgoing_bit_count = 0;
 }
@@ -90,6 +91,7 @@ void SPISlavePeripheral::setResponse(uint8_t *_bytes, size_t count) {
     responseData++;
     responseDataSize--;
   }
+  hasDataToSend = true;
 }
 
 void SPISlavePeripheral::spiInterrupt(GpioEvent& ev) {

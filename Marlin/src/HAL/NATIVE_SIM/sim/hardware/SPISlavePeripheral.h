@@ -39,4 +39,5 @@ private:
   uint8_t *responseData = nullptr;
   size_t responseDataSize = 0;
   bool insideTransaction = false;
+  bool hasDataToSend = false;
 };
