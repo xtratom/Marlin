@@ -26,34 +26,6 @@
 
 #include "tft_spi.h"
 
-uint8_t swSpiTransfer_mode_0(uint8_t b, const uint8_t spi_speed, const pin_t sck_pin, const pin_t miso_pin, const pin_t mosi_pin ) {
-  LOOP_L_N(i, 8) {
-    if (spi_speed == 0) {
-      WRITE_PIN(mosi_pin, !!(b & 0x80));
-      WRITE_PIN(sck_pin, HIGH);
-      b <<= 1;
-      if (miso_pin >= 0 && READ_PIN(miso_pin)) b |= 1;
-      WRITE_PIN(sck_pin, LOW);
-    }
-    else {
-      const uint8_t state = (b & 0x80) ? HIGH : LOW;
-      LOOP_L_N(j, spi_speed)
-        WRITE_PIN(mosi_pin, state);
-
-      LOOP_L_N(j, spi_speed + (miso_pin >= 0 ? 0 : 1))
-        WRITE_PIN(sck_pin, HIGH);
-
-      b <<= 1;
-      if (miso_pin >= 0 && READ_PIN(miso_pin)) b |= 1;
-
-      LOOP_L_N(j, spi_speed)
-        WRITE_PIN(sck_pin, LOW);
-    }
-  }
-
-  return b;
-}
-
 //TFT_SPI tft;
 
 #define TFT_CS_H  WRITE(TFT_CS_PIN, HIGH)
@@ -166,8 +138,7 @@ void TFT_SPI::Abort() {
 }
 
 void TFT_SPI::Transmit(uint16_t Data) {
-  // SPIx.transfer(Data);
-  swSpiTransfer_mode_0(Data, 0, TFT_SCK_PIN, -1, TFT_MOSI_PIN);
+  spiSend(Data);
 }
 
 void TFT_SPI::TransmitDMA(uint32_t MemoryIncrease, uint16_t *Data, uint16_t Count) {
