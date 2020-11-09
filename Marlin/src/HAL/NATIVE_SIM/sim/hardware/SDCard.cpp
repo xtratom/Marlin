@@ -17,7 +17,7 @@ void SDCard::onByteReceived(uint8_t _byte) {
         case CMD0:
           setResponse(R1_IDLE_STATE);
           if (fp) fclose(fp);
-          fp = fopen(SD_SIMULATOR_FAT_IMAGE, "rb");
+          fp = fopen(SD_SIMULATOR_FAT_IMAGE, "rb+");
           break;
         case CMD8:
           if (true/*_type == SD_CARD_TYPE_SD1*/) {
@@ -50,6 +50,19 @@ void SDCard::onByteReceived(uint8_t _byte) {
           buf[512 + 2] = 0; //crc
           setResponse(buf, 512 + 3);
           break;
+        case CMD24: //write block
+          if (true  /*_type != SD_CARD_TYPE_SDHC*/) {
+            arg >>= 9;
+          }
+          setResponse(R1_READY_STATE);
+          waitForBytes = 512 + 1 + 2 + 1; //token + ff (from this response) + data + 2 crc
+          commandWaitingForData = currentCommand;
+          argWaitingForData = arg;
+          bufferIndex = 0;
+          break;
+        case CMD13:
+          setResponse(R1_READY_STATE);
+          break;
         default:
           break;
       }
@@ -60,6 +73,27 @@ void SDCard::onByteReceived(uint8_t _byte) {
       arg |= _byte;
     }
 
+    return;
+  }
+  else if (waitForBytes) {
+    waitForBytes--;
+    buf[bufferIndex++] = _byte;
+    if (waitForBytes == 0) {
+      switch (commandWaitingForData) {
+      case CMD24:
+        fseek(fp, 512 * argWaitingForData, SEEK_SET);
+        fwrite(buf + 2, 512, 1, fp);
+        fflush(fp);
+        buf[0] = DATA_RES_ACCEPTED;
+        buf[1] = 0xFF; // ack for finish write
+        setResponse(buf, 2);
+        break;
+      default:
+        break;
+      }
+      commandWaitingForData = -1;
+      argWaitingForData = 0;
+    }
     return;
   }
   // else if (_byte == 0) {

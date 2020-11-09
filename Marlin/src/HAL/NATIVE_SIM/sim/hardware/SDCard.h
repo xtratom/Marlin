@@ -41,4 +41,8 @@ public:
   uint8_t crc = 0;
   uint8_t buf[1024];
   FILE *fp = nullptr;
+  uint16_t waitForBytes = 0;
+  uint8_t commandWaitingForData = -1;
+  uint32_t argWaitingForData = -1;
+  uint16_t bufferIndex = 0;
 };
