@@ -49,22 +49,22 @@ void ST7796Device::process_command(Command cmd) {
     yMax = (cmd.data[2] << 8) + cmd.data[3];
     graphic_ram_index_y = yMin;
   }
-  else if (cmd.cmd == ST7796S_RAMWR) {
-    for(int i = 0; i < cmd.data.size(); i += 2) {
-      auto pixel = (cmd.data[i] << 8) + cmd.data[i+1];
-      graphic_ram[graphic_ram_index_x + (graphic_ram_index_y * 480)] = pixel;
-      if (graphic_ram_index_x >= xMax) {
-        graphic_ram_index_x = xMin;
-        graphic_ram_index_y++;
-      }
-      else {
-        graphic_ram_index_x++;
-      }
-    }
-    if (graphic_ram_index_y >= yMax && graphic_ram_index_x >= xMax) {
-      dirty = true;
-    }
-  }
+  // else if (cmd.cmd == ST7796S_RAMWR) {
+  //   for(int i = 0; i < cmd.data.size(); i += 2) {
+  //     auto pixel = (cmd.data[i] << 8) + cmd.data[i+1];
+  //     graphic_ram[graphic_ram_index_x + (graphic_ram_index_y * 480)] = pixel;
+  //     if (graphic_ram_index_x >= xMax) {
+  //       graphic_ram_index_x = xMin;
+  //       graphic_ram_index_y++;
+  //     }
+  //     else {
+  //       graphic_ram_index_x++;
+  //     }
+  //   }
+  //   if (graphic_ram_index_y >= yMax && graphic_ram_index_x >= xMax) {
+  //     dirty = true;
+  //   }
+  // }
 }
 
 void ST7796Device::update() {
@@ -105,6 +105,22 @@ void ST7796Device::onByteReceived(uint8_t _byte) {
   if (Gpio::pin_map[dc_pin].value) {
     //data
     data.push_back(_byte);
+    //direct write to memory, to optimize
+    if (command == ST7796S_RAMWR && data.size() == 2) {
+      auto pixel = (data[0] << 8) + data[1];
+      graphic_ram[graphic_ram_index_x + (graphic_ram_index_y * 480)] = pixel;
+      if (graphic_ram_index_x >= xMax) {
+        graphic_ram_index_x = xMin;
+        graphic_ram_index_y++;
+      }
+      else {
+        graphic_ram_index_x++;
+      }
+      if (graphic_ram_index_y >= yMax && graphic_ram_index_x >= xMax) {
+        dirty = true;
+      }
+      data.clear();
+    }
   }
   else {
     //command
