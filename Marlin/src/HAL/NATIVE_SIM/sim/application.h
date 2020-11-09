@@ -6,7 +6,15 @@
 #include "user_interface.h"
 
 #include "hardware/Heater.h"
-#include "hardware/ST7920Device.h"
+#if HAS_GRAPHICAL_TFT
+  #include "hardware/ST7796Device.h"
+  using DisplayDevice = ST7796Device;
+  #define DISPLAY_PARAM SCK_PIN, MISO_PIN, MOSI_PIN, TFT_CS_PIN, TOUCH_CS_PIN, TFT_DC_PIN, BEEPER_PIN, BTN_EN1, BTN_EN2, BTN_ENC, KILL_PIN
+#else
+  #include "hardware/ST7920Device.h"
+  using DisplayDevice = ST7920Device;
+  #define DISPLAY_PARAM LCD_PINS_D4, LCD_PINS_ENABLE, LCD_PINS_RS, BEEPER_PIN, BTN_EN1, BTN_EN2, BTN_ENC, KILL_PIN
+#endif
 #ifdef SDSUPPORT
   #include "hardware/SDCard.h"
 #endif
@@ -50,7 +58,7 @@ public:
                   #ifdef SDSUPPORT
                   , sd(SCK_PIN, MISO_PIN, MOSI_PIN, SDSS)
                   #endif
-                  , display(LCD_PINS_D4, LCD_PINS_ENABLE, LCD_PINS_RS, BEEPER_PIN, BTN_EN1, BTN_EN2, BTN_ENC, KILL_PIN) {}
+                  , display(DISPLAY_PARAM) {}
 
   void process_event(SDL_Event& e) {}
 
@@ -69,6 +77,7 @@ public:
   #ifdef SDSUPPORT
     SDCard sd;
   #endif
+  DisplayDevice display;
   Visualisation vis;
 };
 

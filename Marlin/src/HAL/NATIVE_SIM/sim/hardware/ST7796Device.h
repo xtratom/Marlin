@@ -33,6 +33,9 @@ public:
   void onByteReceived(uint8_t _byte) override;
   void onEndTransaction() override;
 
+  static constexpr uint32_t width = 480;
+  static constexpr uint32_t height = 320;
+
   pin_type dc_pin, beeper_pin, enc1_pin, enc2_pin, enc_but_pin, kill_pin;
 
   uint8_t command = 0;
@@ -40,7 +43,7 @@ public:
   uint8_t incomming_cmd[3] = {};
   std::deque<Command> cmd_in;
 
-  static constexpr uint32_t graphic_ram_size = 480 * 320;
+  static constexpr uint32_t graphic_ram_size = width * height;
   uint16_t graphic_ram[graphic_ram_size] = {}; // 64 x 256bit
   uint16_t graphic_ram_index = 0;
   uint16_t graphic_ram_index_x = 0, graphic_ram_index_y = 0;
