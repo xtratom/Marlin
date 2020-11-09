@@ -29,9 +29,9 @@ protected:
   uint8_t CPOL, CPHA;
 
 private:
-  uint8_t incomming_byte = 0;
-  uint8_t incomming_bit_count = 0;
-  uint8_t incomming_byte_count = 0;
+  uint8_t incoming_byte = 0;
+  uint8_t incoming_bit_count = 0;
+  uint8_t incoming_byte_count = 0;
   uint8_t outgoing_byte = 0xFF;
   uint8_t outgoing_bit_count = 0;
   uint8_t *responseData = nullptr;

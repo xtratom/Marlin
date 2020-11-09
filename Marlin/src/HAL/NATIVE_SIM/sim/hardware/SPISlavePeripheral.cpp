@@ -105,13 +105,13 @@ void SPISlavePeripheral::spiInterrupt(GpioEvent& ev) {
     // When CPOL is 1, data must be read when clock FALL
     if ((ev.event == GpioEvent::RISE && CPOL == 0) || (ev.event == GpioEvent::FALL && CPOL == 1)) {
       const uint8_t currentBit = Gpio::pin_map[mosi_pin].value;
-      incomming_byte = (incomming_byte << 1) | currentBit;
+      incoming_byte = (incoming_byte << 1) | currentBit;
       onBitReceived(currentBit);
-      if (++incomming_bit_count == 8) {
-        onByteReceived(incomming_byte);
-        incomming_byte = 0;
-        incomming_bit_count = 0;
-        incomming_byte_count++;
+      if (++incoming_bit_count == 8) {
+        onByteReceived(incoming_byte);
+        incoming_byte = 0;
+        incoming_bit_count = 0;
+        incoming_byte_count++;
       }
     }
     // == WRITE ==
