@@ -7,6 +7,9 @@
 
 #include "hardware/Heater.h"
 #include "hardware/ST7920Device.h"
+#ifdef SDSUPPORT
+  #include "hardware/SDCard.h"
+#endif
 #include "hardware/print_bed.h"
 
 #include "visualisation.h"
@@ -43,8 +46,11 @@ class Simulation {
 public:
 
   Simulation() :  hotend(HEATER_0_PIN, TEMP_0_PIN),
-                  bed_heater(HEATER_BED_PIN, TEMP_BED_PIN),
-                  display(LCD_PINS_D4, LCD_PINS_ENABLE, LCD_PINS_RS, BEEPER_PIN, BTN_EN1, BTN_EN2, BTN_ENC, KILL_PIN) {}
+                  bed_heater(HEATER_BED_PIN, TEMP_BED_PIN)
+                  #ifdef SDSUPPORT
+                  , sd(SCK_PIN, MISO_PIN, MOSI_PIN, SDSS)
+                  #endif
+                  , display(LCD_PINS_D4, LCD_PINS_ENABLE, LCD_PINS_RS, BEEPER_PIN, BTN_EN1, BTN_EN2, BTN_ENC, KILL_PIN) {}
 
   void process_event(SDL_Event& e) {}
 
@@ -60,7 +66,9 @@ public:
 
   Heater hotend;
   Heater bed_heater;
-  ST7920Device display;
+  #ifdef SDSUPPORT
+    SDCard sd;
+  #endif
   Visualisation vis;
 };
 
