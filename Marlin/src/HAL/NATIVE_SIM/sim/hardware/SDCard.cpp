@@ -2,8 +2,6 @@
 #include "SDCard.h"
 #include "../../../../sd/SdInfo.h"
 
-#define SD_SIMULATOR_FAT_IMAGE "/Users/victor/Development/Marlin/fs.img"
-
 void SDCard::onByteReceived(uint8_t _byte) {
   SPISlavePeripheral::onByteReceived(_byte);
 
