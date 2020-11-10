@@ -13,15 +13,23 @@ public:
   // Callbacks
   virtual void onBeginTransaction();
   virtual void onEndTransaction();
+
   virtual void onBitReceived(uint8_t _bit);
-  virtual void onBitSent(uint8_t _bit);
   virtual void onByteReceived(uint8_t _byte);
-  virtual void onResponseSent();
+  virtual void onRequestedDataReceived(uint8_t token, uint8_t* _data, size_t count);
+
+  virtual void onBitSent(uint8_t _bit);
   virtual void onByteSent(uint8_t _byte);
+  virtual void onResponseSent();
+
 
   void setResponse(uint8_t _data);
   void setResponse16(uint16_t _data, bool msb = true);
   void setResponse(uint8_t *_bytes, size_t count);
+
+  void setRequestedDataSize(uint8_t token, size_t _count);
+
+  uint8_t getCurrentToken() { return currentToken; }
 
 protected:
   void transmitCurrentBit();
@@ -40,4 +48,8 @@ private:
   size_t responseDataSize = 0;
   bool insideTransaction = false;
   bool hasDataToSend = false;
+  uint8_t currentToken = 0xFF;
+  uint8_t *requestedData = nullptr;
+  size_t requestedDataSize = 0;
+  size_t requestedDataIndex = 0;
 };

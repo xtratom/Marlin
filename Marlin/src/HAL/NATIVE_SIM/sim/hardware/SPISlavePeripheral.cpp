@@ -30,6 +30,11 @@ void SPISlavePeripheral::transmitCurrentBit() {
 
 void SPISlavePeripheral::onEndTransaction() {
   // printf("SPISlavePeripheral::onEndTransaction\n");
+  // check for pending data to receive
+  if (requestedDataSize > 0) {
+    onRequestedDataReceived(currentToken, requestedData, requestedDataIndex);
+  }
+  setRequestedDataSize(0xFF, 0);
   insideTransaction = false;
 }
 
@@ -43,11 +48,22 @@ void SPISlavePeripheral::onBitSent(uint8_t _bit) {
 
 void SPISlavePeripheral::onByteReceived(uint8_t _byte) {
   // printf("SPISlavePeripheral::onByteReceived: %d\n", _byte);
+  if (requestedDataSize > 0) {
+    requestedData[requestedDataIndex++] = _byte;
+    if (requestedDataIndex == requestedDataSize) {
+      requestedDataSize = 0;
+      onRequestedDataReceived(currentToken, requestedData, requestedDataIndex);
+    }
+  }
 }
 
 void SPISlavePeripheral::onResponseSent() {
   // printf("SPISlavePeripheral::onResponseSent\n");
   hasDataToSend = false;
+}
+
+void SPISlavePeripheral::onRequestedDataReceived(uint8_t token, uint8_t* _data, size_t count) {
+  printf("SPISlavePeripheral::onRequestedDataReceived\n");
 }
 
 void SPISlavePeripheral::onByteSent(uint8_t _byte) {
@@ -92,6 +108,19 @@ void SPISlavePeripheral::setResponse(uint8_t *_bytes, size_t count) {
     responseDataSize--;
   }
   hasDataToSend = true;
+}
+
+void SPISlavePeripheral::setRequestedDataSize(uint8_t token, size_t _count) {
+  currentToken = token;
+  requestedDataSize = _count;
+  requestedDataIndex = 0;
+  delete[] requestedData;
+  if (_count > 0) {
+    requestedData = new uint8_t[_count];
+  }
+  else {
+    requestedData = nullptr;
+  }
 }
 
 void SPISlavePeripheral::spiInterrupt(GpioEvent& ev) {
