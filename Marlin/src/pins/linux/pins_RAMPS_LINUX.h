@@ -400,6 +400,7 @@
   #define TFT_DC_PIN            44
   #define TFT_SCK_PIN           SCK_PIN
   #define TFT_MOSI_PIN          MOSI_PIN
+  #define LCD_USE_DMA_SPI
 
   #define BTN_EN1                         40
   #define BTN_EN2                         63
