@@ -20,3 +20,12 @@
  *
  */
 #pragma once
+
+// Add strcmp_P if missing
+#ifndef strcmp_P
+  #define strcmp_P(a, b) strcmp((a), (b))
+#endif
+
+#ifndef strcat_P
+  #define strcat_P(dest, src) strcat((dest), (src))
+#endif
