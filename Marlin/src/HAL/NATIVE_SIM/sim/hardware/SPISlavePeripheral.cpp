@@ -63,7 +63,7 @@ void SPISlavePeripheral::onResponseSent() {
 }
 
 void SPISlavePeripheral::onRequestedDataReceived(uint8_t token, uint8_t* _data, size_t count) {
-  printf("SPISlavePeripheral::onRequestedDataReceived\n");
+  // printf("SPISlavePeripheral::onRequestedDataReceived\n");
 }
 
 void SPISlavePeripheral::onByteSent(uint8_t _byte) {

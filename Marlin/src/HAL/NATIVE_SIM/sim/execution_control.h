@@ -291,7 +291,7 @@ public:
     delayCycles(nanosToTicks(secs * ONE_BILLION));
   }
 
-  std::atomic<float> realtime_scale = 50.0;
+  std::atomic<float> realtime_scale = 1.0;
   std::atomic_uint64_t ticks{0};
   uint64_t realtime_nanos = 0;
   static constexpr uint32_t frequency = 100'000'000;
