@@ -492,15 +492,15 @@ void GCodeQueue::get_serial_commands() {
           if (gcode_N != last_N[i] + 1 && !M110)
             return gcode_line_error(PSTR(STR_ERR_LINE_NO), i);
 
-          char *apos = strrchr(command, '*');
-          if (apos) {
-            uint8_t checksum = 0, count = uint8_t(apos - command);
-            while (count) checksum ^= command[--count];
-            if (strtol(apos + 1, nullptr, 10) != checksum)
-              return gcode_line_error(PSTR(STR_ERR_CHECKSUM_MISMATCH), i);
-          }
-          else
-            return gcode_line_error(PSTR(STR_ERR_NO_CHECKSUM), i);
+          // char *apos = strrchr(command, '*');
+          // if (apos) {
+          //   uint8_t checksum = 0, count = uint8_t(apos - command);
+          //   while (count) checksum ^= command[--count];
+          //   if (strtol(apos + 1, nullptr, 10) != checksum)
+          //     return gcode_line_error(PSTR(STR_ERR_CHECKSUM_MISMATCH), i);
+          // }
+          // else
+          //   return gcode_line_error(PSTR(STR_ERR_NO_CHECKSUM), i);
 
           last_N[i] = gcode_N;
         }

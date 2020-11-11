@@ -262,6 +262,8 @@ millis_t MarlinUI::next_button_update_ms; // = 0
 
   #endif
 
+   #if !HAS_GRAPHICAL_TFT
+
   void _wrap_string(uint8_t &col, uint8_t &row, const char * const string, read_byte_cb_t cb_read_byte, bool wordwrap/*=false*/) {
     SETCURSOR(col, row);
     if (!string) return;
@@ -323,6 +325,8 @@ millis_t MarlinUI::next_button_update_ms; // = 0
     }
     if (suff) wrap_string_P(col, row, suff);
   }
+
+   #endif
 
 #endif // HAS_LCD_MENU
 

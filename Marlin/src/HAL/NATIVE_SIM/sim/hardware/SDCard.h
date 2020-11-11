@@ -14,7 +14,7 @@
   *    $ mcopy -i fs.img CFFFP_flow_calibrator.gcode ::/
   * 4) Set the path for SD_SIMULATOR_FAT_IMAGE
   */
- //#define SD_SIMULATOR_FAT_IMAGE "/full/path/to/fs.img"
+ #define SD_SIMULATOR_FAT_IMAGE "/Users/victor/Development/Marlin/fs.img"
  #ifndef SD_SIMULATOR_FAT_IMAGE
    #error "You need set SD_SIMULATOR_FAT_IMAGE with a path for a FAT filesystem image."
  #endif
