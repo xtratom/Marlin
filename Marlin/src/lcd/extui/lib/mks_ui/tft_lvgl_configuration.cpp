@@ -223,8 +223,11 @@ void my_disp_flush(lv_disp_drv_t * disp, const lv_area_t * area, lv_color_t * co
 
   SPI_TFT.setWindow((uint16_t)area->x1, (uint16_t)area->y1, width, height);
 
-  for (uint16_t i = 0; i < height; i++)
+  for (uint16_t i = 0; i < height; i++) {
     SPI_TFT.tftio.WriteSequence((uint16_t*)(color_p + width * i), width);
+    while(SPI_TFT.tftio.isBusy()) { }
+    SPI_TFT.tftio.Abort();
+  }
 
   lv_disp_flush_ready(disp);       /* Indicate you are ready with the flushing*/
 

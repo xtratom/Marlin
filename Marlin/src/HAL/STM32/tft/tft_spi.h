@@ -25,6 +25,7 @@
   #include "stm32f1xx_hal.h"
 #elif defined(STM32F4xx)
   #include "stm32f4xx_hal.h"
+  #include "stm32f4xx_hal_dma.h"
 #else
   #error SPI TFT is currently only supported on STM32F1 and STM32F4 hardware.
 #endif
@@ -63,5 +64,11 @@ public:
   static void WriteReg(uint16_t Reg) { WRITE(TFT_A0_PIN, LOW); Transmit(Reg); WRITE(TFT_A0_PIN, HIGH); }
 
   static void WriteSequence(uint16_t *Data, uint16_t Count) { TransmitDMA(DMA_MINC_ENABLE, Data, Count); }
-  static void WriteMultiple(uint16_t Color, uint16_t Count) { static uint16_t Data; Data = Color; TransmitDMA(DMA_MINC_DISABLE, &Data, Count); }
+  static void WriteMultiple(uint16_t Color, uint32_t Count) {
+    static uint16_t Data; Data = Color;
+    while (Count > 0) {
+      TransmitDMA(DMA_MINC_DISABLE, &Data, Count > 0xFFFF ? 0xFFFF : Count);
+      Count = Count > 0xFFFF ? Count - 0xFFFF : 0;
+    }
+  }
 };
