@@ -44,8 +44,22 @@
 #include "../../core/serial.h"
 #include "../../module/temperature.h"
 
-static_assert(USB_CS_PIN   != -1, "USB_CS_PIN must be defined");
-static_assert(USB_INTR_PIN != -1, "USB_INTR_PIN must be defined");
+static enum {
+  UNINITIALIZED,
+  DO_STARTUP,
+  WAIT_FOR_DEVICE,
+  WAIT_FOR_LUN,
+  MEDIA_READY,
+  MEDIA_ERROR
+} state;
+
+#if defined(USE_USB_HOST)
+  #define USB_OTG_FS_DP 1
+  #define USB_OTG_FS_DM 1
+#else
+  static_assert(USB_CS_PIN   != -1, "USB_CS_PIN must be defined");
+  static_assert(USB_INTR_PIN != -1, "USB_INTR_PIN must be defined");
+#endif
 
 #if ENABLED(USE_UHS3_USB)
   #define NO_AUTO_SPEED
@@ -81,6 +95,140 @@ static_assert(USB_INTR_PIN != -1, "USB_INTR_PIN must be defined");
 
   #define UHS_START  (usb.Init() == 0)
   #define UHS_STATE(state) UHS_USB_HOST_STATE_##state
+#elif defined(USE_USB_HOST)
+  #include "usbh_core.h"
+  #include "usbh_msc.h"
+
+  typedef enum {
+    USB_STATE_INIT,
+    USB_STATE_ERROR,
+    USB_STATE_RUNNING,
+  } usb_state_t;
+
+  // /*
+  // * Background task
+  // */
+  // void MX_USB_HOST_Process(void)
+  // {
+  //   /* USB Host Background task */
+  //   USBH_Process(&hUsbHostFS);
+  // }
+  /*
+  * user callback definition
+  */
+ static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id);
+
+  class USB {
+  public:
+    USBH_HandleTypeDef hUsbHostFS;
+
+    bool start() {
+      // USBH_Init(&usbh, NULL, 1);
+      if (USBH_Init(&hUsbHostFS, USBH_UserProcess, HOST_FS) != USBH_OK)
+      {
+        SERIAL_ECHOLN("Error: USBH_Init");
+      }
+      if (USBH_RegisterClass(&hUsbHostFS, USBH_MSC_CLASS) != USBH_OK)
+      {
+        SERIAL_ECHOLN("Error: USBH_Init");
+      }
+      if (USBH_Start(&hUsbHostFS) != USBH_OK)
+      {
+        SERIAL_ECHOLN("Error: USBH_Start");
+      }
+      return true;
+    }
+
+    void Task() {
+      USBH_Process(&hUsbHostFS);
+    }
+
+    uint8_t getUsbTaskState() {
+      return usb_task_state;
+    }
+
+    void setUsbTaskState(uint8_t state) {
+      usb_task_state = state;
+    }
+
+    // uint8_t getUsbTaskState() {
+    //   ret
+    // }
+
+    uint8_t regRd(uint8_t reg) {
+      return 0x0;
+    }
+
+    uint8_t usb_task_state = USB_STATE_INIT;
+    uint8_t lun = 0;
+  };
+
+  class Bulk {
+  public:
+    Bulk(USB *usb) : usb(usb) {}
+    bool LUNIsGood(uint8_t t) { return USBH_MSC_IsReady(&usb->hUsbHostFS) && USBH_MSC_UnitIsReady(&usb->hUsbHostFS, t); }
+    uint32_t GetCapacity(uint8_t lun) { return 15669247; }
+    uint16_t GetSectorSize(uint8_t lun) { return 512; }
+    uint8_t Read(uint8_t lun, uint32_t addr, uint16_t bsize, uint8_t blocks, uint8_t *buf) {
+      // memset(buf, 0, 512);
+      USBH_StatusTypeDef ret = USBH_MSC_Read(&usb->hUsbHostFS, lun, addr, buf, blocks);
+      // SERIAL_ECHOLNPAIR("Ret: ", ret);
+      return 0;
+    }
+    uint8_t Write(uint8_t lun, uint32_t addr, uint16_t bsize, uint8_t blocks, const uint8_t * buf) {
+      return USBH_MSC_Write(&usb->hUsbHostFS, lun, addr, const_cast <uint8_t*>(buf), bsize * blocks) == USBH_OK;
+    }
+
+    USB *usb;
+  };
+
+  USB usb;
+  Bulk bulk(&usb);
+  #define UHS_START usb.start()
+  #define rREVISION 0
+  #define UHS_STATE(state) USB_STATE_##state
+
+  static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id)
+  {
+    /* USER CODE BEGIN CALL_BACK_1 */
+    switch(id)
+    {
+    case HOST_USER_SELECT_CONFIGURATION:
+    SERIAL_ECHOLN("APPLICATION_SELECT_CONFIGURATION");
+    break;
+
+    case HOST_USER_DISCONNECTION:
+    // Appli_state = APPLICATION_DISCONNECT;
+      SERIAL_ECHOLN("APPLICATION_DISCONNECT");
+      // usb.setUsbTaskState(USB_STATE_RUNNING);
+    break;
+
+    case HOST_USER_CLASS_ACTIVE:
+    // Appli_state = APPLICATION_READY;
+      {
+      SERIAL_ECHOLN("APPLICATION_READY");
+      MSC_LUNTypeDef info;
+      USBH_MSC_GetLUNInfo(phost, id, &info);
+      uint32_t cap = info.capacity.block_nbr / 2000;
+      SERIAL_ECHOLNPAIR("info.capacity.block_nbr : %ld\n", info.capacity.block_nbr);
+      SERIAL_ECHOLNPAIR("info.capacity.block_size: %d\n", info.capacity.block_size);
+      SERIAL_ECHOLNPAIR("capacity                : %d MB\n", cap);
+      usb.setUsbTaskState(USB_STATE_RUNNING);
+      // usb.lun = id;
+      }
+    break;
+
+    case HOST_USER_CONNECTION:
+    // Appli_state = APPLICATION_START;
+      SERIAL_ECHOLN("APPLICATION_START");
+    break;
+
+    default:
+    break;
+    }
+    /* USER CODE END CALL_BACK_1 */
+  }
+
 #else
   #include "lib-uhs2/Usb.h"
   #include "lib-uhs2/masstorage.h"
@@ -95,15 +243,6 @@ static_assert(USB_INTR_PIN != -1, "USB_INTR_PIN must be defined");
 #include "Sd2Card_FlashDrive.h"
 
 #include "../../lcd/marlinui.h"
-
-static enum {
-  UNINITIALIZED,
-  DO_STARTUP,
-  WAIT_FOR_DEVICE,
-  WAIT_FOR_LUN,
-  MEDIA_READY,
-  MEDIA_ERROR
-} state;
 
 #if USB_DEBUG >= 3
   uint32_t lun0_capacity;
