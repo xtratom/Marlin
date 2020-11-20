@@ -2574,6 +2574,7 @@ void HMI_AxisMove() {
     if (HMI_flag.ETempTooLow_flag) {
       if (encoder_diffState == ENCODER_DIFF_ENTER) {
         HMI_flag.ETempTooLow_flag = false;
+        queue.inject_P(PSTR("G92 E0"));
         current_position.e = HMI_ValueStruct.Move_E_scale = 0;
         Draw_Move_Menu();
         DWIN_Draw_FloatValue(true, true, 0, font8x16, Color_White, Color_Bg_Black, 3, 1, 216, MBASE(1), HMI_ValueStruct.Move_X_scale);
