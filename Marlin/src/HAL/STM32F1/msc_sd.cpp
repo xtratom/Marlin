@@ -44,10 +44,10 @@ MarlinUSBCompositeSerial MarlinCompositeSerial;
   void (*real_rx_callback)(void);
 
   void my_rx_callback(void) {
-    real_rx_callback();
     int len = MarlinCompositeSerial.available();
     while (len-- > 0) // >0 because available() may return a negative value
       emergency_parser.update(MarlinCompositeSerial.emergency_state, MarlinCompositeSerial.peek());
+    real_rx_callback();
   }
 #endif
 
