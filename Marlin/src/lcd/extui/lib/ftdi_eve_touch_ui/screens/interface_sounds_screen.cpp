@@ -17,7 +17,7 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                              *
+ *   location: <https://www.gnu.org/licenses/>.                             *
  ****************************************************************************/
 
 #include "../config.h"
@@ -84,7 +84,7 @@ void InterfaceSoundsScreen::onRedraw(draw_mode_t what) {
   }
 
   if (what & FOREGROUND) {
-    #ifdef TOUCH_UI_PORTRAIT
+    #if ENABLED(TOUCH_UI_PORTRAIT)
       constexpr uint8_t w = 2;
     #else
       constexpr uint8_t w = 1;
