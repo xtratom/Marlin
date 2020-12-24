@@ -56,7 +56,7 @@
 // #define XY2_V5_220_TITAN_NO_TMC 1
 
 // #define TFT_LVGL_UI
- // #define TFT_CLASSIC_UI
+// #define TFT_CLASSIC_UI
 // #define TFT_COLOR_UI
 
 #if V6_330_TITAN_TMC
@@ -2838,15 +2838,13 @@
 //
 // ADS7843/XPT2046 ADC Touchscreen such as ILI9341 2.8
 //
-#ifndef TFT_LVGL_UI
-  #define TOUCH_SCREEN
-#endif
+#define TOUCH_SCREEN
 //DONE BY CHITU BOARD
 #if ENABLED(TOUCH_SCREEN)
   #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
   #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
 
-  //#define TOUCH_SCREEN_CALIBRATION
+  #define TOUCH_SCREEN_CALIBRATION
 
   //#define TOUCH_CALIBRATION_X 12316
   //#define TOUCH_CALIBRATION_Y -8981
@@ -2854,7 +2852,7 @@
   //#define TOUCH_OFFSET_Y        257
 
   #if ENABLED(TFT_COLOR_UI)
-    //#define SINGLE_TOUCH_NAVIGATION
+    #define SINGLE_TOUCH_NAVIGATION
   #endif
 #endif
 
