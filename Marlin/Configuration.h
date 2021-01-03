@@ -55,6 +55,8 @@
 // #define XY2_V5_220_NO_TITAN_NO_TMC 1
 // #define XY2_V5_220_TITAN_NO_TMC 1
 
+// #define BTT_SKR_TURBO_330_NO_TITAN_TMC_2209_UART 1
+
 // #define TFT_LVGL_UI
 // #define TFT_CLASSIC_UI
 // #define TFT_COLOR_UI
@@ -335,6 +337,19 @@
   #define Z_MAX_POS 245 // Due to the height of the titan extruder it's recommended to reduce the max Z
   #define CUSTOM_MACHINE_NAME "Tronxy XY-2"
 
+#elif BTT_SKR_TURBO_330_NO_TITAN_TMC_2209_UART
+  // You need to set `default_env = LPC1769` in platformio.ini
+  #define MOTHERBOARD BOARD_BTT_SKR_V1_4_TURBO
+  #define WITH_TMC_2209_UART 1
+  //#define WITH_TMC 1
+  //#define WITH_TITAN 1
+  #define X_BED_SIZE 330
+  #define Y_BED_SIZE 330
+  #define Z_MAX_POS 400
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA SKR Turbo"
+  #define COREXY
+  #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+
 #endif
 
 /**
@@ -421,14 +436,22 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT 1
+#if MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
+  #define SERIAL_PORT -1
+#else
+  #define SERIAL_PORT 1
+#endif
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
  * Currently Ethernet (-2) is only supported on Teensy 4.1 boards.
  * :[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT_2 3
+#if MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
+  #define SERIAL_PORT_2 0
+#else
+  #define SERIAL_PORT_2 3
+#endif
 
 /**
  * This setting determines the communication speed of the printer.
@@ -1011,6 +1034,23 @@
   //#define E5_DRIVER_TYPE A4988
   //#define E6_DRIVER_TYPE A4988
   //#define E7_DRIVER_TYPE A4988
+#elif WITH_TMC_2209_UART
+  #define X_DRIVER_TYPE TMC2209
+  #define Y_DRIVER_TYPE TMC2209
+  #define Z_DRIVER_TYPE TMC2209
+  //#define X2_DRIVER_TYPE A4988
+  //#define Y2_DRIVER_TYPE A4988
+  //#define Z2_DRIVER_TYPE A4988
+  //#define Z3_DRIVER_TYPE A4988
+  //#define Z4_DRIVER_TYPE A4988
+  #define E0_DRIVER_TYPE TMC2209
+  #define E1_DRIVER_TYPE TMC2209
+  //#define E2_DRIVER_TYPE A4988
+  //#define E3_DRIVER_TYPE A4988
+  //#define E4_DRIVER_TYPE A4988
+  //#define E5_DRIVER_TYPE A4988
+  //#define E6_DRIVER_TYPE A4988
+  //#define E7_DRIVER_TYPE A4988
 #else
   #define X_DRIVER_TYPE  A4988
   #define Y_DRIVER_TYPE  A4988
@@ -1501,19 +1541,19 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#if defined(XY3_MODELS) || defined(XY2_MODELS) || defined(D01_MODELS)
+#if defined(XY3_MODELS) || defined(XY2_MODELS) || defined(D01_MODELS) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
   #define INVERT_X_DIR false
 #else
   #define INVERT_X_DIR true
 #endif
 
-#if defined(XY2_MODELS) || defined(D01_MODELS)
+#if defined(XY2_MODELS) || defined(D01_MODELS) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
   #define INVERT_Y_DIR false
 #else
   #define INVERT_Y_DIR true
 #endif
 
-#if defined(XY3_MODELS) || defined(XY2_MODELS)
+#if defined(XY3_MODELS) || defined(XY2_MODELS) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
   #define INVERT_Z_DIR true
 #else
   #define INVERT_Z_DIR false
@@ -1522,7 +1562,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#if defined(WITH_TITAN) || defined(WITH_BMG)
+#if defined(WITH_TITAN) || defined(WITH_BMG) || MOTHERBOARD == BOARD_BTT_SKR_V1_4_TURBO
   #define INVERT_E0_DIR true
 #else
   #define INVERT_E0_DIR false
@@ -1774,7 +1814,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 4
+  #define GRID_MAX_POINTS_X 5
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
@@ -1784,7 +1824,7 @@
 
     // Beyond the probed grid, continue the implied tilt?
     // Default is to maintain the height of the nearest edge.
-    //#define EXTRAPOLATE_BEYOND_GRID
+    #define EXTRAPOLATE_BEYOND_GRID
 
     //
     // Experimental Subdivision of the grid by Catmull-Rom method.
@@ -2762,7 +2802,9 @@
 //
 // 480x320, 3.5", FSMC Stock Display from TronxXY
 //
-#define TFT_TRONXY_X5SA
+#if MOTHERBOARD != BOARD_BTT_SKR_V1_4_TURBO
+  #define TFT_TRONXY_X5SA
+#endif
 
 //
 // 480x320, 3.5", FSMC Stock Display from AnyCubic
@@ -2838,7 +2880,9 @@
 //
 // ADS7843/XPT2046 ADC Touchscreen such as ILI9341 2.8
 //
-#define TOUCH_SCREEN
+#if ANY(TFT_COLOR_UI, TFT_LVGL_UI, TFT_CLASSIC_UI)
+  #define TOUCH_SCREEN
+#endif
 //DONE BY CHITU BOARD
 #if ENABLED(TOUCH_SCREEN)
   #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
