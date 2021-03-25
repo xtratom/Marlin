@@ -51,7 +51,7 @@
   #include "../feature/bltouch.h"
 #endif
 
-#if HAS_DISPLAY
+#if HAS_STATUS_MESSAGE
   #include "../lcd/marlinui.h"
 #endif
 
@@ -263,15 +263,19 @@ void sync_plan_position_e() { planner.set_e_position_mm(current_position.e); }
  */
 void get_cartesian_from_steppers() {
   #if ENABLED(DELTA)
-    forward_kinematics_DELTA(planner.get_axis_positions_mm());
+    forward_kinematics(planner.get_axis_positions_mm());
   #else
     #if IS_SCARA
-      forward_kinematics_SCARA(
-        planner.get_axis_position_degrees(A_AXIS),
-        planner.get_axis_position_degrees(B_AXIS)
+      forward_kinematics(
+          planner.get_axis_position_degrees(A_AXIS)
+        , planner.get_axis_position_degrees(B_AXIS)
+        #if ENABLED(AXEL_TPARA)
+          , planner.get_axis_position_degrees(C_AXIS)
+        #endif
       );
     #else
-      cartes.set(planner.get_axis_position_mm(X_AXIS), planner.get_axis_position_mm(Y_AXIS));
+      cartes.x = planner.get_axis_position_mm(X_AXIS);
+      cartes.y = planner.get_axis_position_mm(Y_AXIS);
     #endif
     cartes.z = planner.get_axis_position_mm(Z_AXIS);
   #endif
@@ -759,7 +763,7 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
 
     // The number of segments-per-second times the duration
     // gives the number of segments
-    uint16_t segments = delta_segments_per_second * seconds;
+    uint16_t segments = segments_per_second * seconds;
 
     // For SCARA enforce a minimum segment size
     #if IS_SCARA
@@ -936,16 +940,16 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
 
   DualXMode dual_x_carriage_mode         = DEFAULT_DUAL_X_CARRIAGE_MODE;
   float inactive_extruder_x              = X2_MAX_POS,                    // Used in mode 0 & 1
-        duplicate_extruder_x_offset      = DEFAULT_DUPLICATION_X_OFFSET;  // Used in mode 2
+        duplicate_extruder_x_offset      = DEFAULT_DUPLICATION_X_OFFSET;  // Used in mode 2 & 3
   xyz_pos_t raised_parked_position;                                       // Used in mode 1
-  bool active_extruder_parked            = false;                         // Used in mode 1 & 2
+  bool active_extruder_parked            = false;                         // Used in mode 1, 2 & 3
   millis_t delayed_move_time             = 0;                             // Used in mode 1
-  int16_t duplicate_extruder_temp_offset = 0;                             // Used in mode 2
+  celsius_t duplicate_extruder_temp_offset = 0;                           // Used in mode 2 & 3
   bool idex_mirrored_mode                = false;                         // Used in mode 3
 
   float x_home_pos(const uint8_t extruder) {
     if (extruder == 0)
-      return base_home_pos(X_AXIS);
+      return X_HOME_POS;
     else
       /**
        * In dual carriage mode the extruder offset provides an override of the
@@ -1140,7 +1144,7 @@ void prepare_line_to_destination() {
       );
       SERIAL_ECHO_START();
       SERIAL_ECHOLN(msg);
-      TERN_(HAS_DISPLAY, ui.set_status(msg));
+      TERN_(HAS_STATUS_MESSAGE, ui.set_status(msg));
       return true;
     }
     return false;
@@ -1340,7 +1344,7 @@ void prepare_line_to_destination() {
       TERN_(SENSORLESS_HOMING, stealth_states = start_sensorless_homing_per_axis(axis));
     }
 
-    #if IS_SCARA
+    #if EITHER(MORGAN_SCARA, MP_SCARA)
       // Tell the planner the axis is at 0
       current_position[axis] = 0;
       sync_plan_position();
@@ -1490,7 +1494,7 @@ void prepare_line_to_destination() {
 
   void homeaxis(const AxisEnum axis) {
 
-    #if IS_SCARA
+    #if EITHER(MORGAN_SCARA, MP_SCARA)
       // Only Z homing (with probe) is permitted
       if (axis != Z_AXIS) { BUZZ(100, 880); return; }
     #else
@@ -1732,7 +1736,8 @@ void prepare_line_to_destination() {
         TERN_(Z_MULTI_ENDSTOPS, case Z_AXIS:)
           stepper.set_separate_multi_axis(false);
       }
-    #endif
+
+    #endif // HAS_EXTRA_ENDSTOPS
 
     #ifdef TMC_HOME_PHASE
       // move back to homing phase if configured and capable
@@ -1839,7 +1844,7 @@ void set_axis_is_at_home(const AxisEnum axis) {
     }
   #endif
 
-  #if ENABLED(MORGAN_SCARA)
+  #if EITHER(MORGAN_SCARA, AXEL_TPARA)
     scara_set_axis_is_at_home(axis);
   #elif ENABLED(DELTA)
     current_position[axis] = (axis == Z_AXIS) ? delta_height - TERN0(HAS_BED_PROBE, probe.offset.z) : base_home_pos(axis);
