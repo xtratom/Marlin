@@ -22,7 +22,7 @@
 #pragma once
 
 //JUST uncomment the option for your machine
-// #define V6_330_TITAN_TMC 1
+#define V6_330_TITAN_TMC 1
 // #define V6_330_TITAN_NO_TMC 1
 // #define V6_330_NO_TITAN_TMC 1
 // #define V6_330_NO_TITAN_NO_TMC 1
@@ -68,7 +68,7 @@
   #define X_BED_SIZE 330
   #define Y_BED_SIZE 330
   #define Z_MAX_POS 400
-  #define CUSTOM_MACHINE_NAME "Tronxy X5SA V6 330 Titan TMC"
+  #define CUSTOM_MACHINE_NAME "Tronxy X5SA Pro V6 330 Titan TMC"
   #define COREXY
 
 #elif V6_330_TITAN_NO_TMC
@@ -889,7 +889,7 @@
  * heater. If your configuration is significantly different than this and you don't understand
  * the issues involved, don't use bed PID until someone else verifies that your hardware works.
  */
-//#define PIDTEMPBED
+#define PIDTEMPBED
 
 //#define BED_LIMIT_SWITCHING
 
@@ -2345,7 +2345,7 @@
  *
  * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek', 'el_gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'hu':'Hungarian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ro':'Romanian', 'ru':'Russian', 'sk':'Slovak', 'sv':'Swedish', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)' }
  */
-#define LCD_LANGUAGE en
+#define LCD_LANGUAGE de
 
 /**
  * LCD Character Set
